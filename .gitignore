@@ -1,0 +1,29 @@
+# Variables de entorno — NUNCA subir
+.env
+
+# Base de datos local
+db.sqlite3
+
+# Entorno virtual de Python
+venv/
+env/
+.venv/
+venv_diantu/
+
+# Cache de Python
+__pycache__/
+*.pyc
+
+# Archivos estáticos recolectados (se generan en el deploy)
+staticfiles/
+
+# Archivos subidos por usuarios en desarrollo
+media/
+
+# Configuración de editores
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
