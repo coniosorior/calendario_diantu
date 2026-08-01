@@ -34,7 +34,7 @@ En vez de un calendario lleno de funciones que casi nadie usa, Diantú se enfoca
 
 ## 🎨 Identidad visual
 
-Diantú usa una paleta centrada en el verde esmeralda (`#06D6A0`) como color de marca. Tipografía: **Plus Jakarta Sans**. El logo representa un sol con 8 rayos rodeado por un anillo orbital, simbolizando tanto la marca como los bloques de tiempo del día.
+Diantú usa una paleta en tonos verde esmeralda como color de marca, con tipografía sans-serif moderna. El logo representa un sol con 8 rayos rodeado por un anillo orbital, simbolizando tanto la marca como los bloques de tiempo del día.
 
 ---
 
