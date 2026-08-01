@@ -4,6 +4,19 @@
 
 ---
 
+## Regla de idioma (norma general del proyecto)
+
+Esta regla aplica a **todo** el código de Diantu, no solo a los modelos:
+
+| Elemento | Idioma | Ejemplo |
+|---|---|---|
+| Nombres de clases, variables, funciones, campos de modelo | **Inglés** | `class Category`, `owner`, `is_default` |
+| Docstrings y comentarios en el código | **Español**, breves y concisos, solo cuando aportan claridad (no comentar lo obvio) | `"""Categoría que clasifica un bloque de tiempo."""` |
+| Mensajes de error/validación al usuario | **Español** | `'El color debe ser un código hexadecimal válido.'` |
+| `verbose_name`, `verbose_name_plural`, y toda la interfaz visible | **Español** | `verbose_name = 'Categoría'` |
+
+---
+
 ## Contexto del proyecto
 
 Diantu es un planificador diario que divide el día en bloques de tiempo. Cada usuario tiene sus propios bloques, categorías e ideas sin horario (inbox). Los modelos viven distribuidos en tres apps:
@@ -19,6 +32,7 @@ Diantu es un planificador diario que divide el día en bloques de tiempo. Cada u
 ```python
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 
 class Category(models.Model):
@@ -68,9 +82,7 @@ class Category(models.Model):
         Esta es la categoría de respaldo para SET_DEFAULT en Block.category.
         """
         if self.is_default:
-            raise models.ProtectedError(
-                'La categoría "Otros" no puede eliminarse.', self
-            )
+            raise ValidationError('La categoría "Otros" no puede eliminarse.')
         super().delete(*args, **kwargs)
 ```
 
