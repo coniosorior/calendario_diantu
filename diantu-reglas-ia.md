@@ -33,7 +33,7 @@ Nombre: **Diantu**. Tagline: *"Ordena tu día bajo el sol"*. Paleta completa de 
 Tres apps: `accounts` (usuarios), `planner` (bloques, timeline, inbox, alarmas), `categories` (categorías con color e ícono). Apps agrupadas en `apps/`. Settings divididos en `config/settings/base.py`, `local.py`, `production.py`. CSS separado por responsabilidad en `static/css/`.
 
 ### 3. `diantu-modelos.md` — Modelos de datos
-`Category` (owner, name, color, icon, is_default), `Block` (owner, category, title, date, start_time, end_time, has_alarm, completed, note), `InboxItem` (owner, title, estimated_duration). Regla clave: `Block.category` usa `SET_DEFAULT` hacia la categoría "Otros" — implementado manualmente (no `CASCADE`), reasignando bloques antes de eliminar una categoría.
+`Category` (owner, name, color, icon, is_default), `Block` (owner, category, title, date, start_time, end_time, has_alarm, completed, note), `InboxItem` (owner, title, estimated_duration). Regla clave: `Block.category` usa `SET_DEFAULT` hacia la categoría "Otros" — implementado manualmente (no `CASCADE`), reasignando bloques antes de eliminar una categoría. Este documento también define la regla de idioma general del proyecto: código (clases, variables, funciones, campos) en inglés; docstrings, comentarios, mensajes de error al usuario y verbose_name en español.
 
 ### 4. `diantu-vistas-urls.md` — Vistas y URLs
 FBV para lógica compleja/custom (`planner`: día, semana, mes, CRUD de bloques, inbox). CBV para CRUD estándar (`categories`: list, create, update, delete). Regla de seguridad repetida en cada vista: `get_object_or_404(Modelo, pk=pk, owner=request.user)`.
@@ -66,7 +66,7 @@ Ramas con formato `tipo/descripcion-corta` (sin nombre de persona, proyecto de u
 1. Leer este documento primero.
 2. Antes de escribir código, verificar si el tema ya está resuelto en alguno de los 8 documentos.
 3. Si hay ambigüedad o el documento no cubre el caso, **preguntar al desarrollador** antes de decidir por cuenta propia.
-4. Escribir el código siguiendo exactamente las convenciones ya definidas (nombres de apps, nombres de campos, patrón `owner=request.user`, FBV/CBV según corresponda).
+4. Escribir el código siguiendo exactamente las convenciones ya definidas (nombres de apps, nombres de campos, patrón `owner=request.user`, FBV/CBV según corresponda, regla de idioma código/comentarios definida en `diantu-modelos.md`).
 5. Si el cambio requiere ejecutar un comando (migración, instalación de paquete, git), **mostrar el comando exacto y pedir confirmación antes de correrlo.**
 6. Nunca inicializar, conectar o sincronizar el repositorio con GitHub. Esa acción es exclusivamente manual del desarrollador.
 7. Al terminar de mostrar y que se guarde cada archivo individual, sugerir el commit correspondiente en formato `tipo(app): descripción` (ver `diantu-git-github.md` para el detalle completo del flujo de Git).
