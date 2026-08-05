@@ -2,7 +2,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
-from apps.planner.models import Block
+# TODO: descomentar cuando exista apps.planner
+# from apps.planner.models import Block
 from .models import Category
 from .forms import CategoryForm
 
@@ -60,6 +61,7 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
         """
         category = self.get_object()
         fallback = Category.objects.get(owner=self.request.user, is_default=True)
-        Block.objects.filter(category=category).update(category=fallback)
+        # TODO: descomentar cuando exista apps.planner
+        # Block.objects.filter(category=category).update(category=fallback)
         messages.success(self.request, f'Categoría eliminada. Sus bloques pasaron a "Otros".')
         return super().form_valid(form)
