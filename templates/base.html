@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Diantú{% endblock %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+
+    {% block css_extra %}{% endblock %}
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+    <header class="app-nav">
+        <a href="{% url 'planner:day' %}" class="nav-logo">
+            <span class="nav-logo-icon"><i class="ti ti-sun"></i></span> Diantú
+        </a>
+        <nav class="nav-links">
+            <a href="{% url 'planner:day' %}">Día</a>
+            <a href="{% url 'planner:week' %}">Semana</a>
+            <a href="{% url 'planner:month' %}">Mes</a>
+            <a href="{% url 'categories:list' %}">Categorías</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="{% url 'planner:inbox_list' %}" class="btn-icon"><i class="ti ti-inbox"></i></a>
+            <a href="{% url 'logout' %}" class="btn-icon"><i class="ti ti-logout"></i></a>
+        </div>
+    </header>
+    {% endif %}
+
+    <main class="app-main">
+        {% if messages %}
+        <div class="messages-stack">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block contenido %}{% endblock %}
+    </main>
+
+    {% block js_extra %}{% endblock %}
+</body>
+</html>

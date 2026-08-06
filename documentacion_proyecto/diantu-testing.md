@@ -10,15 +10,20 @@ Más allá de la buena práctica general, hay una razón específica para Diantu
 
 ---
 
-## Tests de `apps/categories/tests.py`
+## Tests de `apps/categories/tests/`
+
+> Diantu usa el patrón de carpeta `tests/` (con `__init__.py` y un archivo por tipo de test: `test_models.py`, `test_views.py`, etc.) en todas las apps del proyecto, en vez de un único archivo `tests.py` — más escalable a medida que cada app acumula más casos de prueba.
 
 ```python
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .models import Category
+```
 
+Va en `test_models.py`:
 
+```python
 class CategoryModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='ana', password='claveSegura123')
@@ -59,8 +64,11 @@ class CategoryModelTest(TestCase):
         cat_ana = Category.objects.get(owner=self.user, name='Trabajo/Estudio')
         cat_beto = Category.objects.get(owner=otro_user, name='Trabajo/Estudio')
         self.assertNotEqual(cat_ana.pk, cat_beto.pk)
+```
 
+Va en `test_views.py`:
 
+```python
 class CategoryViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -110,7 +118,9 @@ class CategoryViewsTest(TestCase):
 
 ---
 
-## Tests de `apps/planner/tests.py`
+## Tests de `apps/planner/tests/`
+
+> Diantu usa el patrón de carpeta `tests/` (con `__init__.py` y un archivo por tipo de test: `test_models.py`, `test_views.py`, etc.) en todas las apps del proyecto, en vez de un único archivo `tests.py` — más escalable a medida que cada app acumula más casos de prueba.
 
 ```python
 from django.test import TestCase, Client
@@ -119,8 +129,11 @@ from django.urls import reverse
 from datetime import date
 from apps.categories.models import Category
 from .models import Block, InboxItem
+```
 
+Va en `test_models.py`:
 
+```python
 class BlockModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='ana', password='claveSegura123')
@@ -154,8 +167,11 @@ class BlockModelTest(TestCase):
         )
         with self.assertRaises(Exception):
             block.full_clean()
+```
 
+Va en `test_forms.py`:
 
+```python
 class BlockFormTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='ana', password='claveSegura123')
@@ -190,8 +206,11 @@ class BlockFormTest(TestCase):
             'note': '',
         }, owner=self.user)
         self.assertTrue(form.is_valid())
+```
 
+Va en `test_views.py`:
 
+```python
 class DayViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -247,8 +266,11 @@ class DayViewTest(TestCase):
         self.client.post(reverse('planner:block_toggle_complete', kwargs={'pk': block.pk}))
         block.refresh_from_db()
         self.assertTrue(block.completed)
+```
 
+Va en `test_views.py`:
 
+```python
 class InboxItemTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -278,15 +300,20 @@ class InboxItemTest(TestCase):
 
 ---
 
-## Tests de `apps/accounts/tests.py`
+## Tests de `apps/accounts/tests/`
+
+> Diantu usa el patrón de carpeta `tests/` (con `__init__.py` y un archivo por tipo de test: `test_models.py`, `test_views.py`, etc.) en todas las apps del proyecto, en vez de un único archivo `tests.py` — más escalable a medida que cada app acumula más casos de prueba.
 
 ```python
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
 from apps.categories.models import Category
+```
 
+Va en `test_views.py`:
 
+```python
 class RegistroTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -319,8 +346,11 @@ class RegistroTest(TestCase):
             'password2': 'claveDiferente456',
         })
         self.assertFalse(User.objects.filter(username='otro_usuario').exists())
+```
 
+Va en `test_views.py`:
 
+```python
 class LoginTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -353,7 +383,7 @@ python manage.py test
 python manage.py test apps.planner
 
 # Un caso específico
-python manage.py test apps.planner.tests.DayViewTest.test_day_view_solo_muestra_bloques_propios
+python manage.py test apps.planner.tests.test_views.DayViewTest.test_day_view_solo_muestra_bloques_propios
 
 # Con detalle de cada test ejecutado
 python manage.py test -v 2

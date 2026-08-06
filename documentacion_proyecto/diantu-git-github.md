@@ -38,7 +38,7 @@ tipo/descripcion-corta
 
 | Tipo | ¿Cuándo se usa? | Ejemplo |
 |---|---|---|
-| `feature` | Funcionalidad nueva | `feature/categorias-crud` |
+| `feature` | Funcionalidad nueva | `feature/categories-crud` |
 | `fix` | Corrección de un bug | `fix/solapamiento-bloques` |
 | `refactor` | Mejorar código sin cambiar funcionalidad | `refactor/limpiar-forms-planner` |
 | `docs` | Solo cambios en documentación | `docs/actualizar-contexto-proyecto` |
@@ -48,13 +48,13 @@ tipo/descripcion-corta
 
 ```bash
 # ✅ Correcto
-feature/categorias-crud
+feature/categories-crud
 fix/validacion-color-hex
 refactor/vistas-planner
 
 # ❌ Incorrecto
 Feature-Categorias        # mayúsculas, sin guion en el tipo
-categorias-crud            # falta el tipo
+categories-crud            # falta el tipo
 feature/Categorias CRUD    # mayúsculas y espacio
 ```
 
@@ -133,6 +133,8 @@ git commit -m "tipo(app): descripción específica de ese archivo"
 Claude **no** agrupa varios archivos en un solo `git add .` salvo que la desarrolladora lo pida explícitamente (por ejemplo, al cerrar una sesión de trabajo con varios archivos ya revisados uno por uno).
 
 El `git push` se sugiere aparte, normalmente al terminar una funcionalidad completa o al final de una sesión de trabajo — no después de cada commit individual, para no generar ruido de pushes constantes. Claude puede preguntar si conviene hacer push en ese momento.
+
+Los archivos `__init__.py` y otro boilerplate sin lógica propia (contenido generado automáticamente por Django, sin cambios reales de la desarrolladora) no llevan su propio commit individual — se agrupan con el commit del archivo "real" más cercano al que pertenecen. Por ejemplo, `apps/categories/tests/__init__.py` (vacío, solo marca el paquete) se incluye en el mismo commit que `apps/categories/tests/test_models.py`, en vez de generar un commit separado sin contenido sustantivo que revisar.
 
 ---
 
