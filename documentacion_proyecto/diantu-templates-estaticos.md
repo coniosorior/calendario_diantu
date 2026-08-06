@@ -9,7 +9,7 @@
 Heredadas directamente del material de clase y ya acordadas en el proyecto:
 
 1. **Mobile-first absoluto** — todo diseño parte de la vista móvil y escala hacia arriba con `@media` queries.
-2. **Cero CSS embebido** — nunca usar el atributo `style=""` en HTML. Todo estilo va en archivos `.css` con clases.
+2. **Cero CSS embebido** — nunca usar el atributo `style=""` en HTML. Todo estilo va en archivos `.css` con clases. Excepción: el atributo `style` es aceptable únicamente cuando contiene una variable CSS dinámica proveniente de datos del usuario (ej. `style="--pill-color: {{ block.category.color }};"`), ya que es la única forma de inyectar un color definido por el usuario sin hardcodear clases para cada posibilidad. No es aceptable usar `style` con propiedades CSS completas y estáticas (ej. `style="color: red; font-size: 14px;"`) — eso siempre debe ir en una clase dentro de un archivo `.css`.
 3. **Sistema de componentes** — fragmentos repetidos (la píldora de bloque, la tarjeta de categoría) se extraen con `{% include %}` o Template Partials, nunca se copian y pegan.
 4. **`{% load static %}` en cada template que lo necesite** — no se hereda del `base.html`, hay que declararlo en cada archivo que use `{% static %}`.
 
