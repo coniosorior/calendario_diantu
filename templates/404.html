@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block titulo %}Página no encontrada — Diantú{% endblock %}
+
+{% block contenido %}
+<div class="error-page">
+    <h1>404</h1>
+    <p>Página no encontrada.</p>
+    <a href="{% url 'planner:day' %}">Volver al inicio</a>
+</div>
+{% endblock %}
