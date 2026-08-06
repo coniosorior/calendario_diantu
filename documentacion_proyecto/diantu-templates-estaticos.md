@@ -29,7 +29,10 @@ Heredadas directamente del material de clase y ya acordadas en el proyecto:
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/pill.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/nav.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 
     {% block css_extra %}{% endblock %}
@@ -202,7 +205,15 @@ static/
 │   ├── variables.css        ← CSS custom properties (paleta completa de Diantu)
 │   ├── base.css              ← reset, tipografía base, body
 │   ├── layout.css            ← header, main, grid de página
-│   ├── components.css        ← .pill, .fab, .form-input, .btn-primary, etc.
+│   ├── components/
+│   │   ├── pill.css          ← la píldora de bloque
+│   │   ├── button.css        ← .btn-primary, .btn-secondary, .fab (incluye estados hover)
+│   │   ├── form.css          ← .form-input, .form-group, .form-error-banner
+│   │   ├── nav.css           ← .app-nav, .nav-links
+│   │   ├── message.css       ← mensajes flash (.message-success, .message-error, etc.)
+│   │   ├── card.css          ← base genérica de tarjeta (.card, .form-card, .category-card), incluye estados hover
+│   │   ├── color-picker.css  ← paleta de swatches custom para elegir color de categoría
+│   │   └── overlay.css       ← fondo oscurecido para contenido flotante (modales) — reservado, sin uso actual
 │   └── auth.css               ← estilos específicos de login/registro
 ├── js/
 │   ├── timeline.js            ← lógica del timeline (scroll, hora activa)
@@ -211,6 +222,8 @@ static/
 │   └── inbox.js                 ← lógica del panel inbox
 └── icons/
 ```
+
+Cada componente visual vive en su propio archivo dentro de `components/`, cargado directo con su propio `<link>` en `base.html` — se evita deliberadamente un archivo "índice" con `@import`, porque `@import` bloquea la carga en paralelo de los archivos CSS (antipatrón de rendimiento conocido). Los estados de un componente (`hover`, `focus`, `disabled`, `active`) viven siempre en el mismo archivo que el componente base, nunca en un archivo aparte.
 
 ### `static/css/variables.css` (base para todo lo demás)
 
@@ -239,7 +252,7 @@ static/
 }
 ```
 
-> Este archivo se carga **primero** en `base.html`, antes que cualquier otro CSS, para que sus variables estén disponibles en `base.css`, `layout.css` y `components.css`.
+> Este archivo se carga **primero** en `base.html`, antes que cualquier otro CSS, para que sus variables estén disponibles en `base.css`, `layout.css` y todos los archivos dentro de `components/`.
 
 ### Configuración necesaria en `settings/base.py`
 
