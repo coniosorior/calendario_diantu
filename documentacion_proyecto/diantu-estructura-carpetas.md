@@ -45,7 +45,9 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── apps.py
 │   │   ├── forms.py             ← formularios de login y registro
 │   │   ├── models.py            ← extensión del modelo User si se necesita
-│   │   ├── tests.py             ← casos de prueba de registro, login y perfil
+│   │   ├── tests/                ← casos de prueba de registro, login y perfil
+│   │   │   ├── __init__.py
+│   │   │   └── test_models.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   │
@@ -62,7 +64,9 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── apps.py
 │   │   ├── forms.py             ← formulario de crear/editar bloque
 │   │   ├── models.py            ← Block, DayPlan, InboxItem
-│   │   ├── tests.py             ← casos de prueba de bloques, timeline y permisos por usuario
+│   │   ├── tests/                ← casos de prueba de bloques, timeline y permisos por usuario
+│   │   │   ├── __init__.py
+│   │   │   └── test_models.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   │
@@ -76,7 +80,9 @@ diantu/                          ← carpeta raíz del proyecto
 │       ├── apps.py
 │       ├── forms.py
 │       ├── models.py            ← Category
-│       ├── tests.py             ← casos de prueba del modelo y CRUD de categorías
+│       ├── tests/                ← casos de prueba del modelo y CRUD de categorías
+│       │   ├── __init__.py
+│       │   └── test_models.py
 │       ├── urls.py
 │       └── views.py
 │
