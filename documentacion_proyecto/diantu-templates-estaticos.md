@@ -252,4 +252,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ---
 
-*Documento parte de la serie de arquitectura de Diantu. Ver también: `diantu-diseno.md` (paleta completa), `diantu-vistas-urls.md`.*
+*Documento parte de la serie de arquitectura de Diantu. Ver también: `diantu-sistema-de-marca.md` (paleta completa), `diantu-vistas-urls.md`.*
