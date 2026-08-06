@@ -58,7 +58,9 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   │       ├── day.html     ← vista Día
 │   │   │       ├── week.html    ← vista Semana
 │   │   │       ├── month.html   ← vista Mes
-│   │   │       └── inbox.html   ← panel inbox
+│   │   │       ├── inbox_list.html
+│   │   │       ├── inbox_form.html
+│   │   │       └── inbox_move_form.html
 │   │   ├── __init__.py
 │   │   ├── admin.py
 │   │   ├── apps.py
@@ -74,7 +76,9 @@ diantu/                          ← carpeta raíz del proyecto
 │       ├── migrations/
 │       ├── templates/
 │       │   └── categories/
-│       │       └── manage.html  ← CRUD de categorías
+│       │       ├── list.html
+│       │       ├── form.html
+│       │       └── confirm_delete.html
 │       ├── __init__.py
 │       ├── admin.py
 │       ├── apps.py
@@ -91,8 +95,16 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── variables.css        ← todas las CSS variables de Diantú
 │   │   ├── base.css             ← estilos globales, reset
 │   │   ├── layout.css           ← estructura de página
-│   │   ├── components.css       ← píldoras, timeline, botones
-│   │   └── auth.css             ← estilos del login/registro
+│   │   ├── components/
+│   │   │   ├── pill.css          ← la píldora de bloque
+│   │   │   ├── button.css        ← .btn-primary, .btn-secondary, .fab
+│   │   │   ├── form.css          ← .form-input, .form-group, etc.
+│   │   │   ├── nav.css           ← .app-nav, .nav-links
+│   │   │   ├── message.css       ← mensajes flash
+│   │   │   ├── card.css          ← tarjeta genérica base
+│   │   │   ├── color-picker.css  ← paleta de colores custom
+│   │   │   └── overlay.css       ← fondo oscurecido, reservado para uso futuro
+│   │   └── auth.css              ← estilos del login/registro
 │   ├── js/
 │   │   ├── timeline.js          ← lógica del timeline del día
 │   │   ├── alarms.js            ← lógica de notificaciones y alarmas
@@ -112,7 +124,7 @@ diantu/                          ← carpeta raíz del proyecto
 ├── .gitignore                   ← excluye .env, db.sqlite3, __pycache__, etc.
 ├── manage.py
 ├── requirements.txt             ← dependencias: Django, python-decouple, dj-database-url, whitenoise, etc.
-└── diantu-diseno.md              ← documento de diseño visual y técnico
+└── diantu-sistema-de-marca.md    ← documento de diseño visual y técnico
 ```
 
 ---
@@ -139,7 +151,7 @@ En Django 6 además se configura **Content Security Policy (CSP)** en `productio
 
 ### Testing por app
 
-Siguiendo el material de testing, cada app (`accounts`, `planner`, `categories`) lleva su propio `tests.py` con casos de prueba reales, no vacío. Los tests se escriben en paralelo al desarrollo de cada funcionalidad, no al final del proyecto. Algunos ejemplos pensados para Diantu:
+Siguiendo el material de testing, cada app (`accounts`, `planner`, `categories`) lleva su propia carpeta `tests/` con casos de prueba reales, separados por tipo (`test_models.py`, `test_views.py`, etc.), no vacío. Los tests se escriben en paralelo al desarrollo de cada funcionalidad, no al final del proyecto. Algunos ejemplos pensados para Diantu:
 
 - **`accounts`**: el registro crea un usuario correctamente, el login redirige a la vista Día, las contraseñas no coincidentes fallan la validación
 - **`planner`**: un `Block` calcula bien su duración, la vista Día devuelve status 200, un usuario solo ve sus propios bloques y no los de otros usuarios
@@ -151,7 +163,7 @@ El material de clase muestra las apps en la raíz del proyecto, lo habitual en p
 
 ### CSS separado por responsabilidad
 
-En lugar de un único `styles.css`, se separa en `variables.css`, `base.css`, `layout.css`, `components.css` y `auth.css`. Así, cuando se necesite cambiar el color de las píldoras, se sabe exactamente en qué archivo buscar. Si en el futuro se agrega el tema oscuro, solo se modifica `variables.css`.
+En lugar de un único `styles.css`, se separa en `variables.css`, `base.css`, `layout.css`, la carpeta `components/` (un archivo por componente visual: `pill.css`, `button.css`, `form.css`, `nav.css`, `message.css`, `card.css`, `color-picker.css`, `overlay.css`) y `auth.css`. Así, cuando se necesite cambiar el color de las píldoras, se sabe exactamente en qué archivo buscar. Si en el futuro se agrega el tema oscuro, solo se modifica `variables.css`.
 
 ---
 
