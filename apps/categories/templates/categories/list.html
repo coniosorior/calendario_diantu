@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Categorías — Diantú{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Categorías</h1>
+    <a href="{% url 'categories:create' %}" class="btn-primary">
+        <i class="ti ti-plus" aria-hidden="true"></i> Nueva categoría
+    </a>
+</div>
+
+<!--
+    Clases nuevas usadas aquí (aún no existen en components/card.css, se construyen después):
+    .category-card         → contenedor, fondo teñido al 10% con var(--cat-color)
+    .category-icon-circle  → círculo relleno de color, ícono blanco adentro
+    .category-menu         → usa <details>/<summary> nativo de HTML, sin JavaScript, para el menú de tres puntos
+-->
+<div class="category-list">
+    {% for category in categories %}
+    <div class="category-card" style="--cat-color: {{ category.color }};">
+        <div class="category-card-info">
+            <span class="category-icon-circle">
+                <i class="ti {{ category.icon }}" aria-hidden="true"></i>
+            </span>
+            <span class="category-name">{{ category.name }}</span>
+        </div>
+
+        {% if not category.is_default %}
+        <details class="category-menu">
+            <summary aria-label="Más opciones"><i class="ti ti-dots-vertical" aria-hidden="true"></i></summary>
+            <div class="category-menu-dropdown">
+                <a href="{% url 'categories:update' pk=category.pk %}">
+                    <i class="ti ti-edit" aria-hidden="true"></i> Editar
+                </a>
+                <a href="{% url 'categories:delete' pk=category.pk %}" class="text-danger">
+                    <i class="ti ti-trash" aria-hidden="true"></i> Eliminar
+                </a>
+            </div>
+        </details>
+        {% else %}
+        <a href="{% url 'categories:update' pk=category.pk %}" class="btn-icon" aria-label="Editar">
+            <i class="ti ti-edit" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="empty-state">Aún no tienes categorías.</p>
+    {% endfor %}
+</div>
+{% endblock %}
