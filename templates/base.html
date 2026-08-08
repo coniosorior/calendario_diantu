@@ -21,17 +21,22 @@
 
     {% if user.is_authenticated %}
     <header class="app-nav">
-        <a href="{% url 'planner:day' %}" class="nav-logo">
+        <a href="#" class="nav-logo">
+            {# TODO: volver a planner:day cuando exista planner #}
             <span class="nav-logo-icon"><i class="ti ti-sun"></i></span> Diantú
         </a>
         <nav class="nav-links">
+            {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:day' %}">Día</a>
             <a href="{% url 'planner:week' %}">Semana</a>
             <a href="{% url 'planner:month' %}">Mes</a>
+            {% endcomment %}
             <a href="{% url 'categories:list' %}">Categorías</a>
         </nav>
         <div class="nav-actions">
+            {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:inbox_list' %}" class="btn-icon"><i class="ti ti-inbox"></i></a>
+            {% endcomment %}
             <a href="{% url 'logout' %}" class="btn-icon"><i class="ti ti-logout"></i></a>
         </div>
     </header>
