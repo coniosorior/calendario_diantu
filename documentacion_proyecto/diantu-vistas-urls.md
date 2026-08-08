@@ -17,7 +17,7 @@ Regla aplicada en todo el proyecto: **CRUD estándar y repetitivo → CBV. Lógi
 | `planner` | Vista Mes | FBV | Lógica compleja: calendario con conteo de bloques por día |
 | `planner` | Crear/Editar/Eliminar Block | FBV | Requiere validación custom de solapamiento de horarios |
 | `planner` | Inbox (listar/crear/mover a timeline) | FBV | Lógica custom: "mover" es una operación combinada (crear Block + borrar InboxItem) |
-| `categories` | Listar/Crear/Editar/Eliminar Category | **CBV** | CRUD estándar, sin lógica especial más allá de filtrar por `owner` |
+| `categories` | Listar Category | **CBV** | Solo lectura, sin CRUD — las 8 categorías son fijas, gestionables únicamente desde `/admin/` |
 
 ---
 
@@ -263,6 +263,8 @@ def inbox_move_to_timeline(request, pk):
 
 ## App `categories` — URLs y vistas (CBV)
 
+Las 8 categorías predeterminadas son fijas — no existe creación, edición ni eliminación desde la app de usuario final. Esa gestión queda reservada al panel `/admin/`, de uso exclusivo de la desarrolladora (ver `diantu-admin.md`).
+
 ### `apps/categories/urls.py`
 
 ```python
@@ -273,22 +275,15 @@ app_name = 'categories'
 
 urlpatterns = [
     path('', views.CategoryListView.as_view(), name='list'),
-    path('nueva/', views.CategoryCreateView.as_view(), name='create'),
-    path('<int:pk>/editar/', views.CategoryUpdateView.as_view(), name='update'),
-    path('<int:pk>/eliminar/', views.CategoryDeleteView.as_view(), name='delete'),
 ]
 ```
 
 ### `apps/categories/views.py`
 
 ```python
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.contrib import messages
-from apps.planner.models import Block
 from .models import Category
-from .forms import CategoryForm
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -298,55 +293,6 @@ class CategoryListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Category.objects.filter(owner=self.request.user)
-
-
-class CategoryCreateView(LoginRequiredMixin, CreateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = 'categories/form.html'
-    success_url = reverse_lazy('categories:list')
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        messages.success(self.request, 'Categoría creada.')
-        return super().form_valid(form)
-
-
-class CategoryUpdateView(LoginRequiredMixin, UpdateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = 'categories/form.html'
-    success_url = reverse_lazy('categories:list')
-
-    def get_queryset(self):
-        # Filtro por owner: un usuario no puede editar categorías ajenas
-        return Category.objects.filter(owner=self.request.user)
-
-    def form_valid(self, form):
-        messages.success(self.request, 'Categoría actualizada.')
-        return super().form_valid(form)
-
-
-class CategoryDeleteView(LoginRequiredMixin, DeleteView):
-    model = Category
-    template_name = 'categories/confirm_delete.html'
-    success_url = reverse_lazy('categories:list')
-
-    def get_queryset(self):
-        # No se puede eliminar la categoría "Otros" (is_default=True)
-        return Category.objects.filter(owner=self.request.user, is_default=False)
-
-    def form_valid(self, form):
-        """
-        Antes de eliminar, reasigna todos los Block de esta categoría
-        a la categoría "Otros" del mismo usuario. Este es el patrón
-        manual que reemplaza on_delete=SET_DEFAULT (ver diantu-modelos.md).
-        """
-        category = self.get_object()
-        fallback = Category.objects.get(owner=self.request.user, is_default=True)
-        Block.objects.filter(category=category).update(category=fallback)
-        messages.success(self.request, f'Categoría eliminada. Sus bloques pasaron a "Otros".')
-        return super().form_valid(form)
 ```
 
 ---
@@ -357,9 +303,9 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
 |---|---|
 | Listar | `planner:day`, `categories:list` |
 | Detalle con parámetro | `planner:day_detail` con `date_str` |
-| Crear | `planner:block_create`, `categories:create` |
-| Editar | `planner:block_update`, `categories:update` |
-| Eliminar | `planner:block_delete`, `categories:delete` |
+| Crear | `planner:block_create` |
+| Editar | `planner:block_update` |
+| Eliminar | `planner:block_delete` |
 | Acción custom | `planner:block_toggle_complete`, `planner:inbox_move` |
 
 ---
