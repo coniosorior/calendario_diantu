@@ -117,68 +117,13 @@ class InboxItemForm(forms.ModelForm):
 
 ---
 
-## `CategoryForm` (`apps/categories/forms.py`)
-
-```python
-from django import forms
-from .models import Category
-
-
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ['name', 'color', 'icon']
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'Ej: Lectura, Voluntariado...',
-            }),
-            'color': forms.TextInput(attrs={
-                'class': 'form-input color-picker',
-                'type': 'color',
-            }),
-            'icon': forms.Select(attrs={'class': 'form-input'}),
-            # El widget real de 'icon' se define con choices en el propio
-            # campo del formulario si se quiere restringir a un set fijo
-            # de íconos de Tabler (ver nota abajo).
-        }
-
-    def clean_name(self):
-        name = self.cleaned_data.get('name', '').strip()
-        if len(name) < 2:
-            raise forms.ValidationError('El nombre debe tener al menos 2 caracteres.')
-        return name
-
-    def clean_color(self):
-        color = self.cleaned_data.get('color', '')
-        if not color.startswith('#') or len(color) != 7:
-            raise forms.ValidationError('El color debe ser un código hexadecimal válido, ej: #06D6A0.')
-        return color
-```
-
-> 💡 **Sobre el campo `icon`:** para que el usuario no escriba nombres de íconos a mano, conviene limitar las opciones a un set curado de Tabler Icons usando `choices` en el propio formulario (no en el modelo, para mantener el modelo flexible):
->
-> ```python
-> ICON_CHOICES = [
->     ('ti-briefcase', '💼 Trabajo'),
->     ('ti-run', '🏃 Ejercicio'),
->     ('ti-stethoscope', '🏥 Salud'),
->     ('ti-moon', '🌙 Dormir'),
->     ('ti-tools-kitchen-2', '🍽 Comida'),
->     ('ti-coffee', '☕ Descanso'),
->     ('ti-heart', '❤️ Personal'),
->     ('ti-bulb', '💡 Otros'),
->     ('ti-book', '📖 Estudio'),
->     ('ti-yoga', '🧘 Bienestar'),
-> ]
-> icon = forms.ChoiceField(choices=ICON_CHOICES, widget=forms.Select(attrs={'class': 'form-input'}))
-> ```
+> `CategoryForm` ya no existe — las categorías son fijas (8 predeterminadas), sin creación ni edición desde la app de usuario final. Ver `diantu-vistas-urls.md` y `diantu-admin.md`.
 
 ---
 
 ## Template genérico de formulario (patrón reutilizable)
 
-Aplica tanto para `BlockForm` como `CategoryForm`, siguiendo la convención de la clase de formularios (sin CSS embebido, con `{% csrf_token %}` obligatorio):
+Aplica para `BlockForm` (y cualquier futuro ModelForm de la app `planner`), siguiendo la convención de la clase de formularios (sin CSS embebido, con `{% csrf_token %}` obligatorio):
 
 ```html
 {% extends "base.html" %}
@@ -233,9 +178,6 @@ Aplica tanto para `BlockForm` como `CategoryForm`, siguiendo la convención de l
 | `BlockForm` | `end_time > start_time` | `clean()` |
 | `BlockForm` | Sin solapamiento con otros bloques del mismo día/usuario | `clean()` |
 | `BlockForm` | `category` limitada a las del usuario logueado | `__init__` (queryset) |
-| `CategoryForm` | `name` mínimo 2 caracteres | `clean_name()` |
-| `CategoryForm` | `color` formato hexadecimal válido | `clean_color()` |
-| `CategoryForm` | `name` único por usuario | `UniqueConstraint` en el modelo (clase 3) |
 
 ---
 
