@@ -13,7 +13,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Apps de Diantu (se agregan aquí cuando existan: apps.accounts, apps.planner, apps.categories)
+    # Apps de Diantu
+    'apps.categories',
 ]
 
 MIDDLEWARE = [
