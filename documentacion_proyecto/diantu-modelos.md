@@ -79,7 +79,7 @@ class Category(models.Model):
     def delete(self, *args, **kwargs):
         """
         Impide eliminar la categoría 'Otros' (is_default=True) desde el ORM.
-        Esta es la categoría de respaldo para SET_DEFAULT en Block.category.
+        Esta es la categoría de respaldo usada por reassign_to_default_category en Block.category.
         """
         if self.is_default:
             raise ValidationError('La categoría "Otros" no puede eliminarse.')
@@ -112,6 +112,24 @@ from django.core.exceptions import ValidationError
 from apps.categories.models import Category
 
 
+def reassign_to_default_category(collector, field, sub_objs, using):
+    """
+    on_delete personalizado para Block.category. Reemplaza a SET_DEFAULT,
+    que no sirve aquí porque el reemplazo ("Otros") es distinto por usuario,
+    no un valor fijo global.
+
+    Cuando se borra una Category, todos sus Block comparten el mismo owner
+    que ella (BlockForm limita las categorías disponibles a las del propio
+    usuario) — así que basta el owner del primer sub_obj para encontrar
+    la "Otros" correcta.
+    """
+    if not sub_objs:
+        return
+    owner = sub_objs[0].owner
+    fallback = Category.objects.get(owner=owner, is_default=True)
+    collector.add_field_update(field, fallback, sub_objs)
+
+
 class Block(models.Model):
     """
     Un bloque de tiempo dentro del día de un usuario. Es la unidad central
@@ -125,8 +143,7 @@ class Block(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.SET_DEFAULT,
-        default=None,           # se resuelve en save() — ver nota abajo
+        on_delete=reassign_to_default_category,
         related_name='blocks',
     )
     title = models.CharField(max_length=100)
@@ -163,7 +180,7 @@ class Block(models.Model):
         return int((end - start).total_seconds() / 60)
 ```
 
-> ⚠️ **Nota importante sobre `on_delete=SET_DEFAULT`:** Django requiere un valor fijo en `default`, pero la categoría "Otros" es distinta para cada usuario (no hay una única fila global). La solución correcta es **sobreescribir el método `delete()` en `Category`** (ya hecho arriba, bloqueando el borrado de `is_default=True`) y en la vista de eliminar categoría, reasignar manualmente los bloques a la categoría "Otros" del mismo usuario **antes** de borrar. Ver el patrón completo en `diantu-vistas-urls.md`, sección "Eliminar categoría".
+> ⚠️ **Nota sobre el on_delete personalizado de `Block.category`:** Django exige un valor fijo en `on_delete=SET_DEFAULT`, pero la categoría "Otros" es distinta para cada usuario (no hay una única fila global) — por eso no se puede usar esa constante. La solución es pasar una **función propia** como `on_delete` (`reassign_to_default_category`, definida arriba), que Django ejecuta automáticamente cada vez que se borra una `Category`, sin importar desde dónde se dispare el borrado (admin, un futuro comando, etc.) — evita tener que repetir la lógica de reasignación en cada lugar que pudiera eliminar una categoría. `Category.delete()` sigue bloqueando el borrado de `is_default=True` como defensa adicional a nivel de modelo. Hoy, la única vía real de borrar una categoría no-default es `/admin/`, exclusiva de la desarrolladora (ver `diantu-admin.md`) — no existe ninguna vista de este tipo en la app de usuario final.
 
 ---
 
@@ -219,7 +236,7 @@ Category
 |---|---|---|
 | `Category.owner → User` | `CASCADE` | Si se borra el usuario, sus categorías no tienen sentido sin él |
 | `Block.owner → User` | `CASCADE` | Igual razón — no quedan bloques huérfanos |
-| `Block.category → Category` | `SET_DEFAULT` (con lógica manual, ver nota) | No perder datos del usuario al borrar una categoría; los bloques se reasignan a "Otros" en vez de eliminarse o bloquear la acción |
+| `Block.category → Category` | Función personalizada (`reassign_to_default_category`) | No perder datos del usuario al borrar una categoría; los bloques se reasignan automáticamente a "Otros" del mismo usuario, sin importar desde dónde se dispare el borrado |
 | `InboxItem.owner → User` | `CASCADE` | Igual razón que arriba |
 
 ---
