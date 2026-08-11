@@ -101,9 +101,7 @@ apps/planner/templates/planner/
     └── _block_pill.html            ← la píldora de bloque, reutilizada en day/week
 
 apps/categories/templates/categories/
-├── list.html
-├── form.html
-└── confirm_delete.html
+└── list.html  ← solo lectura, sin crear/editar/eliminar (las categorías son fijas, gestión vía /admin/)
 ```
 
 ---
