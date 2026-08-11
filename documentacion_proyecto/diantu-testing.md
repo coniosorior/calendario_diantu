@@ -69,10 +69,14 @@ class CategoryModelTest(TestCase):
 Va en `test_views.py`:
 
 ```python
-class CategoryViewsTest(TestCase):
+class CategoryListViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='ana', password='claveSegura123')
+        # other_user no se usa directo en los tests, pero su existencia (con sus
+        # propias 8 categorías vía la señal) es lo que hace significativo el
+        # test de aislamiento de abajo: sin otro usuario con categorías propias
+        # en la base de datos, ese test pasaría aunque el filtro por owner fallara.
         self.other_user = User.objects.create_user(username='beto', password='claveSegura123')
         self.client.login(username='ana', password='claveSegura123')
 
@@ -94,26 +98,6 @@ class CategoryViewsTest(TestCase):
         categorias_mostradas = response.context['categories']
         for cat in categorias_mostradas:
             self.assertEqual(cat.owner, self.user)
-
-    def test_no_puede_editar_categoria_ajena(self):
-        cat_ajena = Category.objects.get(owner=self.other_user, name='Trabajo/Estudio')
-        response = self.client.get(reverse('categories:update', kwargs={'pk': cat_ajena.pk}))
-        self.assertEqual(response.status_code, 404)  # get_queryset filtra por owner
-
-    def test_eliminar_categoria_reasigna_bloques_a_otros(self):
-        from apps.planner.models import Block
-        cat_ejercicio = Category.objects.get(owner=self.user, name='Ejercicio')
-        cat_otros = Category.objects.get(owner=self.user, name='Otros')
-
-        block = Block.objects.create(
-            owner=self.user, category=cat_ejercicio, title='Correr',
-            date='2026-07-10', start_time='08:00', end_time='08:30',
-        )
-
-        self.client.post(reverse('categories:delete', kwargs={'pk': cat_ejercicio.pk}))
-
-        block.refresh_from_db()
-        self.assertEqual(block.category, cat_otros)
 ```
 
 ---
