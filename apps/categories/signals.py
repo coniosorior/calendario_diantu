@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from apps.accounts.models import Profile
 from .models import Category
 
 DEFAULT_CATEGORIES = [
@@ -21,10 +22,12 @@ def crear_categorias_predeterminadas(sender, instance, created, **kwargs):
     Se ejecuta automáticamente cada vez que se guarda un User.
     `created=True` solo la primera vez (cuando el usuario se registra),
     por eso el if — evita duplicar categorías en cada login o edición
-    de perfil.
+    de perfil. Crea las 8 categorías predeterminadas y el Profile
+    del usuario nuevo, con los valores por defecto del modelo.
     """
     if created:
         categorias = [
             Category(owner=instance, **data) for data in DEFAULT_CATEGORIES
         ]
         Category.objects.bulk_create(categorias)
+        Profile.objects.create(user=instance)
