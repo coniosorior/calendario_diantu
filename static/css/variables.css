@@ -1,0 +1,22 @@
+:root {
+    /* Marca y estructura */
+    --color-bg: #F8F9FA;
+    --color-surface: #FFFFFF;
+    --color-brand: #06D6A0;
+    --color-brand-light: #E6FAF4;
+    --color-text-primary: #1A1D23;
+    --color-text-secondary: #8B909A;
+    --color-border: #E2E6ED;
+    --color-strikethrough: #C4C8D0;
+    --color-danger: #FF6B6B;
+
+    /* Categorías predeterminadas */
+    --cat-trabajo: #006EE9;
+    --cat-ejercicio: #FB5607;
+    --cat-salud: #8338EC;
+    --cat-dormir: #415A77;
+    --cat-comida: #8BC34A;
+    --cat-descanso: #FFBC42;
+    --cat-personal: #EA638C;
+    --cat-otros: #8B909A;
+}
