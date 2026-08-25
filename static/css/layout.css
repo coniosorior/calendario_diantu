@@ -2,6 +2,9 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px 16px;
+}
+
+.app-main--center {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
