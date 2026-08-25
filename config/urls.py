@@ -16,13 +16,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from apps.accounts.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cuentas/login/', LoginView.as_view(authentication_form=LoginForm), name='login'),
-    path('cuentas/', include('django.contrib.auth.urls')),
+    path('cuentas/logout/', LogoutView.as_view(), name='logout'),
+    path('cuentas/password_change/', PasswordChangeView.as_view(), name='password_change'),
+    path('cuentas/password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('cuentas/password_reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('cuentas/password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('cuentas/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('cuentas/reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('cuentas/', include('apps.accounts.urls')),
     path('categorias/', include('apps.categories.urls')),
 ]
