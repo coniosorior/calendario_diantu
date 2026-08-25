@@ -1,0 +1,38 @@
+.auth-card {
+    max-width: 420px;
+    margin: 64px auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 32px;
+}
+
+.auth-card h1 {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.auth-hint {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.auth-hint a {
+    color: var(--color-brand);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.auth-hint a:hover {
+    text-decoration: underline;
+}
