@@ -38,7 +38,10 @@
             {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:inbox_list' %}" class="btn-icon"><i class="ti ti-inbox"></i></a>
             {% endcomment %}
-            <a href="{% url 'logout' %}" class="btn-icon"><i class="ti ti-logout"></i></a>
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-icon"><i class="ti ti-logout"></i></button>
+            </form>
         </div>
     </header>
     {% endif %}
