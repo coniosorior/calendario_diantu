@@ -7,18 +7,18 @@
 
 .message-success {
     background: var(--color-brand-light);
-    color: #05a67f;
+    color: var(--color-success);
     border: 1px solid var(--color-brand);
 }
 
 .message-error {
-    background: #FFF0F0;
+    background: var(--color-danger-bg);
     color: var(--color-danger);
     border: 1px solid var(--color-danger);
 }
 
 .message-warning {
-    background: #FFF8E6;
-    color: #B45309;
-    border: 1px solid #FFBC42;
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    border: 1px solid var(--color-warning);
 }
