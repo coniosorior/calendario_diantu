@@ -26,7 +26,7 @@ input, button, textarea, select {
 /* Tipografía */
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     color: var(--color-text-primary);
     background-color: var(--color-bg);
 }
