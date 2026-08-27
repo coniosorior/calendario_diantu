@@ -1,0 +1,13 @@
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1.25rem;
+    padding: 2rem;
+}
+
+.overlay-panel {
+    max-width: 30rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
