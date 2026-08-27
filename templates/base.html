@@ -41,7 +41,7 @@
             {% endcomment %}
             <form method="post" action="{% url 'logout' %}" class="logout-form">
                 {% csrf_token %}
-                <button type="submit" class="btn-icon"><i class="ti ti-logout"></i></button>
+                <button type="submit" class="btn-icon"><span class="sr-only">Cerrar sesión</span><i class="ti ti-logout"></i></button>
             </form>
         </div>
     </header>
