@@ -23,7 +23,7 @@ Diantu es un planificador diario que divide el día en bloques de tiempo. Cada u
 
 - `apps/planner/models.py` → `Block`, `InboxItem`
 - `apps/categories/models.py` → `Category`
-- `apps/accounts/models.py` → (usa el `User` nativo de Django, sin modelo propio por ahora)
+- `apps/accounts/models.py` → `Profile` (extiende User con preferencias)
 
 ---
 
@@ -100,6 +100,68 @@ Estas se crean automáticamente para cada usuario nuevo mediante una señal `pos
 | Descanso | `#FFBC42` | `ti-coffee` | False |
 | Personal | `#EA638C` | `ti-heart` | False |
 | Otros | `#8B909A` | `ti-bulb` | **True** |
+
+---
+
+## Modelo `Profile` (`apps/accounts/models.py`)
+
+```python
+from django.db import models
+from django.conf import settings
+
+
+class Profile(models.Model):
+    """
+    Extiende al usuario nativo de Django con preferencias que User
+    no contempla. Se crea automáticamente junto con el User (misma
+    señal post_save que crea las categorías predeterminadas).
+    """
+
+    TIME_FORMAT_CHOICES = [
+        ('12h', '12 horas'),
+        ('24h', '24 horas'),
+    ]
+    FIRST_DAY_CHOICES = [
+        ('mon', 'Lunes'),
+        ('sun', 'Domingo'),
+    ]
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile',
+    )
+    time_format = models.CharField(
+        max_length=3,
+        choices=TIME_FORMAT_CHOICES,
+        default='24h',
+    )
+    first_day_of_week = models.CharField(
+        max_length=3,
+        choices=FIRST_DAY_CHOICES,
+        default='mon',
+    )
+    timezone = models.CharField(
+        max_length=50,
+        default='America/Santiago',
+        help_text='Zona horaria en formato IANA, ej: America/Santiago',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfiles'
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
+```
+
+`Profile` se crea junto con las categorías predeterminadas dentro de la misma señal `post_save` sobre `User` (ver `apps/categories/signals.py` y `diantu-autenticacion.md`) — cuando `created=True`, además de las 8 `Category` se ejecuta `Profile.objects.create(user=instance)`. Sus 3 campos son preferencias de usuario, todas con valor por defecto:
+
+- `time_format`: formato de hora preferido (`12h` o `24h`).
+- `first_day_of_week`: primer día de la semana en el calendario (`mon` o `sun`).
+- `timezone`: zona horaria del usuario en formato IANA.
 
 ---
 
@@ -222,6 +284,7 @@ class InboxItem(models.Model):
 ```
 User (Django nativo)
   │
+  ├── 1:1 → Profile     (user)
   ├── 1:N → Category   (owner)
   ├── 1:N → Block       (owner)
   └── 1:N → InboxItem   (owner)
@@ -238,6 +301,7 @@ Category
 | `Block.owner → User` | `CASCADE` | Igual razón — no quedan bloques huérfanos |
 | `Block.category → Category` | Función personalizada (`reassign_to_default_category`) | No perder datos del usuario al borrar una categoría; los bloques se reasignan automáticamente a "Otros" del mismo usuario, sin importar desde dónde se dispare el borrado |
 | `InboxItem.owner → User` | `CASCADE` | Igual razón que arriba |
+| `Profile.user → User` | `CASCADE` | Si se borra el usuario, su perfil de preferencias no tiene sentido sin él |
 
 ---
 
