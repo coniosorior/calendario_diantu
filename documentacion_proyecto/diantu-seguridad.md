@@ -12,7 +12,7 @@ Django protege automáticamente contra las vulnerabilidades más comunes. Esto n
 |---|---|---|
 | **SQL Injection** | SQL malicioso inyectado en una consulta | El ORM escapa automáticamente todos los valores de `filter()`, `get()`, `create()`, etc. Nunca se debe usar SQL crudo con datos del usuario sin escapar. |
 | **XSS** | JavaScript malicioso inyectado en el HTML | Los templates de Django escapan todo el contenido por defecto (`{{ variable }}`). Nunca usar `{{ variable\|safe }}` con contenido escrito por un usuario. |
-| **CSRF** | Solicitudes falsificadas desde otro sitio | Todo formulario POST de Diantu debe llevar `{% csrf_token %}` — ya aplicado en `BlockForm`, `CategoryForm`, login, registro. |
+| **CSRF** | Solicitudes falsificadas desde otro sitio | Todo formulario POST de Diantu debe llevar `{% csrf_token %}` — ya aplicado en `RegistroForm`, login, y se aplicará en los formularios futuros de `planner` (`BlockForm`, aún no existe). `CategoryForm` fue eliminado: las categorías ya no se crean/editan desde la app. |
 | **Clickjacking** | Embeber Diantu en un iframe malicioso | El middleware `XFrameOptionsMiddleware` bloquea esto automáticamente. |
 | **Contraseñas en texto plano** | Almacenamiento inseguro de contraseñas | Django hashea con PBKDF2 (más de 720.000 iteraciones) automáticamente al usar `User.objects.create_user()` o `UserCreationForm`. |
 
@@ -142,7 +142,6 @@ INSTALLED_APPS = [
 
     # Apps de Diantu
     'apps.accounts',
-    'apps.planner',
     'apps.categories',
 ]
 
