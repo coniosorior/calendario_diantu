@@ -9,6 +9,18 @@
 Heredadas directamente del material de clase y ya acordadas en el proyecto:
 
 1. **Mobile-first absoluto** — todo diseño parte de la vista móvil y escala hacia arriba con `@media` queries.
+
+### Breakpoints oficiales
+
+| Nombre | `min-width` | Rango que cubre | Qué cambia |
+|---|---|---|---|
+| Base (mobile) | *(ninguno)* | Desde 320px hasta 767px | Diseño de partida — todo en columna, mínimo soportado: 320px (iPhone SE / Android más chicos) |
+| Tablet | `768px` | Desde 768px hasta 1023px | A definir según cada página |
+| Desktop | `1024px` | Desde 1024px hasta 1439px | A definir según cada página |
+| TV/Wide | `1440px` | 1440px en adelante | A definir según cada página |
+
+> **Convención mobile-first:** el CSS de cada componente se define primero para el nivel Base (mobile), y los ajustes para niveles superiores se agregan mediante `@media (min-width: ...)` únicamente cuando la página en cuestión lo requiere. No se declaran bloques `@media` sin reglas dentro.
+
 2. **Cero CSS embebido** — nunca usar el atributo `style=""` en HTML. Todo estilo va en archivos `.css` con clases. Excepción: el atributo `style` es aceptable únicamente cuando contiene una variable CSS dinámica proveniente de datos del usuario (ej. `style="--pill-color: {{ block.category.color }};"`), ya que es la única forma de inyectar un color definido por el usuario sin hardcodear clases para cada posibilidad. No es aceptable usar `style` con propiedades CSS completas y estáticas (ej. `style="color: red; font-size: 14px;"`) — eso siempre debe ir en una clase dentro de un archivo `.css`.
 3. **Sistema de componentes** — fragmentos repetidos (la píldora de bloque, la tarjeta de categoría) se extraen con `{% include %}` o Template Partials, nunca se copian y pegan.
 4. **`{% load static %}` en cada template que lo necesite** — no se hereda del `base.html`, hay que declararlo en cada archivo que use `{% static %}`.
