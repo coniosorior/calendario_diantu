@@ -121,6 +121,79 @@ class InboxItemForm(forms.ModelForm):
 
 ---
 
+## `RegistroForm` y `LoginForm` (`apps/accounts/forms.py`)
+
+```python
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
+
+
+class RegistroForm(UserCreationForm):
+    """
+    Extiende UserCreationForm de Django agregando el campo email como
+    obligatorio. El formulario nativo de Django no lo incluye por defecto,
+    pero Diantu lo necesita para futuras funcionalidades de recuperación
+    de cuenta (ver diantu-autenticacion.md).
+    """
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-input',
+            'placeholder': 'nombre@ejemplo.com',
+        }),
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-input',
+            'placeholder': 'tu_usuario',
+        })
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-input',
+            'placeholder': 'Mínimo 8 caracteres',
+        })
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-input',
+            'placeholder': 'Repite tu contraseña',
+        })
+        self.fields['username'].help_text = None
+        self.fields['password1'].help_text = None
+        self.fields['password2'].help_text = None
+
+
+class LoginForm(AuthenticationForm):
+    """
+    Extiende AuthenticationForm de Django solo para agregar las clases CSS
+    a los campos username/password, ya que el formulario nativo no las trae.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-input',
+            'placeholder': 'tu_usuario',
+        })
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-input',
+            'placeholder': 'Tu contraseña',
+        })
+```
+
+### `RegistroForm`
+
+Extiende `UserCreationForm` de Django agregando el campo `email` como obligatorio (`EmailField`, ausente en el formulario nativo). Además, en `__init__` limpia (`= None`) el `help_text` por defecto de `username`, `password1` y `password2` — Diantu prefiere un formulario minimalista sin los textos de ayuda largos que trae Django de fábrica, y agrega las clases CSS (`form-input`) y placeholders a cada campo.
+
+### `LoginForm`
+
+Extiende `AuthenticationForm` de Django. No agrega ninguna validación nueva — el formulario nativo ya valida usuario/contraseña — solo sobreescribe `__init__` para agregar la clase CSS `form-input` y placeholders a los campos `username`/`password`, ya que `AuthenticationForm` no trae esos atributos por defecto.
+
+---
+
 ## Template genérico de formulario (patrón reutilizable)
 
 Aplica para `BlockForm` (y cualquier futuro ModelForm de la app `planner`), siguiendo la convención de la clase de formularios (sin CSS embebido, con `{% csrf_token %}` obligatorio):
@@ -178,6 +251,8 @@ Aplica para `BlockForm` (y cualquier futuro ModelForm de la app `planner`), sigu
 | `BlockForm` | `end_time > start_time` | `clean()` |
 | `BlockForm` | Sin solapamiento con otros bloques del mismo día/usuario | `clean()` |
 | `BlockForm` | `category` limitada a las del usuario logueado | `__init__` (queryset) |
+| `RegistroForm` | `email` obligatorio (`EmailField`, `required=True`) | Declaración de campo |
+| `LoginForm` | Sin validación custom — solo agrega clases CSS a los widgets | `__init__` |
 
 ---
 
