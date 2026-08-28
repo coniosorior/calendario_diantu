@@ -38,7 +38,6 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── migrations/
 │   │   ├── templates/
 │   │   │   └── accounts/
-│   │   │       ├── login.html
 │   │   │       └── register.html
 │   │   ├── __init__.py
 │   │   ├── admin.py
@@ -47,7 +46,8 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── models.py            ← extensión del modelo User si se necesita
 │   │   ├── tests/                ← casos de prueba de registro, login y perfil
 │   │   │   ├── __init__.py
-│   │   │   └── test_models.py
+│   │   │   ├── test_models.py
+│   │   │   └── test_views.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   │
@@ -68,7 +68,9 @@ diantu/                          ← carpeta raíz del proyecto
 │   │   ├── models.py            ← Block, DayPlan, InboxItem
 │   │   ├── tests/                ← casos de prueba de bloques, timeline y permisos por usuario
 │   │   │   ├── __init__.py
-│   │   │   └── test_models.py
+│   │   │   ├── test_models.py
+│   │   │   ├── test_forms.py
+│   │   │   └── test_views.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   │
@@ -76,17 +78,15 @@ diantu/                          ← carpeta raíz del proyecto
 │       ├── migrations/
 │       ├── templates/
 │       │   └── categories/
-│       │       ├── list.html
-│       │       ├── form.html
-│       │       └── confirm_delete.html
+│       │       └── list.html
 │       ├── __init__.py
 │       ├── admin.py
 │       ├── apps.py
-│       ├── forms.py
 │       ├── models.py            ← Category
 │       ├── tests/                ← casos de prueba del modelo y CRUD de categorías
 │       │   ├── __init__.py
-│       │   └── test_models.py
+│       │   ├── test_models.py
+│       │   └── test_views.py
 │       ├── urls.py
 │       └── views.py
 │
@@ -115,7 +115,9 @@ diantu/                          ← carpeta raíz del proyecto
 ├── templates/                   ← templates globales compartidos
 │   ├── base.html                ← template base con navbar, head, CSS
 │   ├── 404.html
-│   └── 500.html
+│   ├── 500.html
+│   └── registration/
+│       └── login.html           ← sobreescribe la vista nativa LoginView de Django, no vive dentro de accounts/
 │
 ├── media/                       ← archivos subidos por usuarios (si aplica)
 │
