@@ -240,25 +240,31 @@ Cada componente visual vive en su propio archivo dentro de `components/`, cargad
 ```css
 :root {
     /* Marca y estructura */
-    --color-bg: #F8F9FA;
-    --color-surface: #FFFFFF;
-    --color-brand: #06D6A0;
-    --color-brand-light: #E6FAF4;
-    --color-text-primary: #1A1D23;
-    --color-text-secondary: #8B909A;
-    --color-border: #E2E6ED;
-    --color-strikethrough: #C4C8D0;
-    --color-danger: #FF6B6B;
+    --color-bg: hsl(210 17% 98%);
+    --color-surface: hsl(0 0% 100%);
+    --color-brand: hsl(164 95% 43%);
+    --color-brand-hover: hsl(164 95% 38%);
+    --color-brand-light: hsl(162 67% 94%);
+    --color-text-primary: hsl(220 15% 12%);
+    --color-text-secondary: hsl(220 7% 57%);
+    --color-border: hsl(218 23% 91%);
+    --color-strikethrough: hsl(220 11% 79%);
+    --color-danger: hsl(0 100% 71%);
+    --color-danger-bg: hsl(0 100% 97%);
+    --color-success: hsl(164 94% 34%);
+    --color-warning-bg: hsl(43 100% 95%);
+    --color-warning-text: hsl(26 90% 37%);
+    --color-warning: hsl(39 100% 63%);
 
     /* Categorías predeterminadas */
-    --cat-trabajo: #006EE9;
-    --cat-ejercicio: #FB5607;
-    --cat-salud: #8338EC;
-    --cat-dormir: #415A76;
-    --cat-comida: #8BC34A;
-    --cat-descanso: #FFBC42;
-    --cat-personal: #EA638C;
-    --cat-otros: #8B909A;
+    --cat-trabajo: hsl(212 100% 46%);
+    --cat-ejercicio: hsl(19 97% 51%);
+    --cat-salud: hsl(265 83% 57%);
+    --cat-dormir: hsl(212 29% 36%);
+    --cat-comida: hsl(88 50% 53%);
+    --cat-descanso: hsl(39 100% 63%);
+    --cat-personal: hsl(342 76% 65%);
+    --cat-otros: hsl(220 7% 57%);
 }
 ```
 
