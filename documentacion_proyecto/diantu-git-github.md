@@ -183,7 +183,7 @@ git push origin main
 
 ## 7. Checklist antes de conectar el proyecto con GitHub por primera vez
 
-Diantu **aún no está conectado** a ningún repositorio remoto (ver sección 14 de `diantu-contexto-proyecto.md`). Cuando la desarrolladora decida hacerlo, este es el orden correcto — ya definido en `diantu-seguridad.md`, repetido aquí en el contexto de Git:
+Este es el orden correcto para la primera conexión del proyecto con GitHub — ya definido en `diantu-seguridad.md`, repetido aquí en el contexto de Git:
 
 ```
 1. Verificar que .gitignore existe y contiene ".env" (ANTES del primer commit)
@@ -224,11 +224,10 @@ Diantu **aún no está conectado** a ningún repositorio remoto (ver sección 14
 
 *(actualizar esta sección en cada sesión, igual que la sección 14 de `diantu-contexto-proyecto.md`)*
 
-- ⬜ Repositorio local inicializado (`git init`)
-- ⬜ `.gitignore` verificado antes del primer commit
-- ⬜ Repositorio remoto creado en GitHub
-- ⬜ Primer push a `main` realizado
-- ⬜ Rama de trabajo actual: _ninguna todavía_
+- [x] Repositorio local inicializado (`git init`)
+- [x] `.gitignore` verificado antes del primer commit
+- [x] Repositorio remoto creado en GitHub (https://github.com/coniosorior/calendario_diantu)
+- [x] Primer push a `main` realizado
 
 ---
 
