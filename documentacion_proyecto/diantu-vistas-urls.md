@@ -11,7 +11,7 @@ Regla aplicada en todo el proyecto: **CRUD estándar y repetitivo → CBV. Lógi
 | App | Vista | Tipo | Razón |
 |---|---|---|---|
 | `accounts` | Registro | FBV | Lógica custom: crea usuario + categorías predeterminadas |
-| `accounts` | Login/Logout | Django nativo (`include('django.contrib.auth.urls')`) | No se reescribe, Django ya lo resuelve |
+| `accounts` | Login/Logout | Django nativo, rutas declaradas explícitamente (con `LoginForm` custom para Login) | Se declaran una por una en `config/urls.py` en vez de usar `include`, para evitar duplicar la ruta `login` que sí se personaliza |
 | `planner` | Vista Día | FBV | Lógica compleja: agrupa bloques, calcula posiciones en el timeline |
 | `planner` | Vista Semana | FBV | Lógica compleja: agrupa por día, resume categorías |
 | `planner` | Vista Mes | FBV | Lógica compleja: calendario con conteo de bloques por día |
@@ -26,22 +26,34 @@ Regla aplicada en todo el proyecto: **CRUD estándar y repetitivo → CBV. Lógi
 ```python
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
+from apps.accounts.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('cuentas/', include('django.contrib.auth.urls')),
+    path('cuentas/login/', LoginView.as_view(authentication_form=LoginForm), name='login'),
+    path('cuentas/logout/', LogoutView.as_view(), name='logout'),
+    path('cuentas/password_change/', PasswordChangeView.as_view(), name='password_change'),
+    path('cuentas/password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('cuentas/password_reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('cuentas/password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('cuentas/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('cuentas/reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('cuentas/', include('apps.accounts.urls')),
-    path('', include('apps.planner.urls')),
     path('categorias/', include('apps.categories.urls')),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
-> Nota: `apps.planner.urls` se monta en la raíz (`''`) porque la vista Día es la página principal de la app una vez logueado.
+> Nota: las vistas de autenticación de Django se declaran una por una (en vez de `include('django.contrib.auth.urls')`) para poder pasarle a `LoginView` el `authentication_form=LoginForm` custom. No hay ninguna ruta de `apps.planner` montada hoy en la raíz porque esa app todavía no existe.
 
 ---
 
@@ -57,6 +69,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('registro/', views.registro, name='registro'),
+    path('eliminar-cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
 ]
 ```
 
@@ -65,7 +78,10 @@ urlpatterns = [
 ```python
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from .forms import RegistroForm
 
 
 def registro(request):
@@ -75,7 +91,7 @@ def registro(request):
     diantu-autenticacion.md). No es un CRUD estándar de Django.
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
             messages.success(request, f'Cuenta creada. ¡Bienvenido a Diantu, {user.username}!')
@@ -83,16 +99,31 @@ def registro(request):
         else:
             messages.error(request, 'Revisa los datos ingresados.')
     else:
-        form = UserCreationForm()
+        form = RegistroForm()
 
     return render(request, 'accounts/register.html', {'form': form})
+
+
+@login_required
+@require_POST
+def eliminar_cuenta(request):
+    """
+    Solo responde a POST para que la baja de cuenta nunca se dispare
+    por accidente con un simple link (GET).
+    """
+    user = request.user
+    user.is_active = False
+    user.save()
+    logout(request)
+    messages.success(request, 'Tu cuenta fue eliminada. ¡Gracias por usar Diantu!')
+    return redirect('login')
 ```
 
 ### Settings relacionados (`config/settings/base.py`)
 
 ```python
 LOGIN_REDIRECT_URL = 'planner:day'
-LOGOUT_REDIRECT_URL = 'accounts:registro'  # o una landing pública
+LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 ```
 
