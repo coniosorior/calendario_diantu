@@ -28,6 +28,8 @@ class CategoryAdmin(admin.ModelAdmin):
     show_facets = admin.ShowFacets.ALWAYS
 ```
 
+> **Estado actual de `apps/accounts/admin.py`:** el archivo existe pero está vacío (solo el boilerplate `# Register your models here.` que genera Django). El modelo `Profile` (ver `diantu-modelos.md`) todavía no está registrado en el admin.
+
 ---
 
 ## `apps/planner/admin.py`
