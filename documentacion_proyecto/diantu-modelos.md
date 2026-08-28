@@ -95,7 +95,7 @@ Estas se crean automáticamente para cada usuario nuevo mediante una señal `pos
 | Trabajo/Estudio | `#006EE9` | `ti-briefcase` | False |
 | Ejercicio | `#FB5607` | `ti-run` | False |
 | Salud | `#8338EC` | `ti-stethoscope` | False |
-| Dormir | `#415A77` | `ti-moon` | False |
+| Dormir | `#415A76` | `ti-moon` | False |
 | Comida | `#8BC34A` | `ti-tools-kitchen-2` | False |
 | Descanso | `#FFBC42` | `ti-coffee` | False |
 | Personal | `#EA638C` | `ti-heart` | False |
