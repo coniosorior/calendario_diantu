@@ -254,7 +254,7 @@ Cada componente visual vive en su propio archivo dentro de `components/`, cargad
     --cat-trabajo: #006EE9;
     --cat-ejercicio: #FB5607;
     --cat-salud: #8338EC;
-    --cat-dormir: #415A77;
+    --cat-dormir: #415A76;
     --cat-comida: #8BC34A;
     --cat-descanso: #FFBC42;
     --cat-personal: #EA638C;

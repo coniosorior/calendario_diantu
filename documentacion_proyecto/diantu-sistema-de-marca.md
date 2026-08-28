@@ -89,7 +89,7 @@ Usados para clasificar actividades por tipo en el timeline/calendario:
 | Trabajo, estudio, productividad | `#006EE9` |
 | Ejercicio, actividad física/recreativa | `#FB5607` |
 | Salud (médico, kinesiólogo, psicólogo, etc.) | `#8338EC` |
-| Dormir | `#5E548E` |
+| Dormir | `#415A76` |
 | Almuerzo, comida, merienda | `#8BC34A` |
 | Descanso, break | `#FFBC42` |
 | Actividad personal, familiar, autocuidado | `#EA638C` |
