@@ -41,10 +41,14 @@ Heredadas directamente del material de clase y ya acordadas en el proyecto:
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/pill.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/form.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/message.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/overlay.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/card.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 
     {% block css_extra %}{% endblock %}
@@ -53,23 +57,31 @@ Heredadas directamente del material de clase y ya acordadas en el proyecto:
 
     {% if user.is_authenticated %}
     <header class="app-nav">
-        <a href="{% url 'planner:day' %}" class="nav-logo">
+        <a href="#" class="nav-logo">
+            {# TODO: volver a planner:day cuando exista planner #}
             <span class="nav-logo-icon"><i class="ti ti-sun"></i></span> Diantú
         </a>
         <nav class="nav-links">
+            {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:day' %}">Día</a>
             <a href="{% url 'planner:week' %}">Semana</a>
             <a href="{% url 'planner:month' %}">Mes</a>
+            {% endcomment %}
             <a href="{% url 'categories:list' %}">Categorías</a>
         </nav>
         <div class="nav-actions">
+            {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:inbox_list' %}" class="btn-icon"><i class="ti ti-inbox"></i></a>
-            <a href="{% url 'logout' %}" class="btn-icon"><i class="ti ti-logout"></i></a>
+            {% endcomment %}
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-icon"><span class="sr-only">Cerrar sesión</span><i class="ti ti-logout"></i></button>
+            </form>
         </div>
     </header>
     {% endif %}
 
-    <main class="app-main">
+    <main class="app-main {% block main_extra_class %}{% endblock %}">
         {% if messages %}
         <div class="messages-stack">
             {% for message in messages %}
@@ -97,8 +109,10 @@ templates/                          ← globales
 └── 500.html
 
 apps/accounts/templates/accounts/
-├── login.html                      ← puede sobreescribir registration/login.html
 └── register.html
+
+templates/registration/
+└── login.html                      ← sobreescribe la vista nativa LoginView de Django, no vive dentro de accounts/
 
 apps/planner/templates/planner/
 ├── day.html                        ← vista principal, timeline vertical
@@ -216,14 +230,14 @@ static/
 │   ├── base.css              ← reset, tipografía base, body
 │   ├── layout.css            ← header, main, grid de página
 │   ├── components/
-│   │   ├── pill.css          ← la píldora de bloque
-│   │   ├── button.css        ← .btn-primary, .btn-secondary, .fab (incluye estados hover)
-│   │   ├── form.css          ← .form-input, .form-group, .form-error-banner
-│   │   ├── nav.css           ← .app-nav, .nav-links
-│   │   ├── message.css       ← mensajes flash (.message-success, .message-error, etc.)
-│   │   ├── card.css          ← base genérica de tarjeta (.card, .form-card, .category-card), incluye estados hover
-│   │   ├── color-picker.css  ← paleta de swatches custom para elegir color de categoría
-│   │   └── overlay.css       ← fondo oscurecido para contenido flotante (modales) — reservado, sin uso actual
+│   │   ├── pill.css          ← ⏳ pendiente (se crea junto con apps/planner)
+│   │   ├── button.css        ← ✅ .btn-primary, .btn-secondary, .btn-icon
+│   │   ├── form.css          ← ✅ .form-input, .form-group, .form-error-banner
+│   │   ├── nav.css           ← ✅ .app-nav, .nav-links
+│   │   ├── message.css       ← ✅ mensajes flash (.message-success, .message-error, etc.)
+│   │   ├── card.css          ← ✅ base genérica de tarjeta (.card, .overlay-panel)
+│   │   ├── color-picker.css  ← ⏳ sin uso confirmado (la función de crear categorías personalizadas fue descartada)
+│   │   └── overlay.css       ← ✅ fondo oscurecido para contenido flotante
 │   └── auth.css               ← estilos específicos de login/registro
 ├── js/
 │   ├── timeline.js            ← lógica del timeline (scroll, hora activa)
