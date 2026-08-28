@@ -6,7 +6,7 @@
 
 ## Decisión de diseño: usuario + contraseña (no correo)
 
-Diantu usa el sistema de autenticación **nativo de Django** sin modificaciones — login con `username` + `password`, no con correo electrónico. Esto evita tener que crear un backend de autenticación personalizado, que añade complejidad innecesaria para un proyecto de este tamaño. El correo se solicita en el registro únicamente para futuras funcionalidades de recuperación de cuenta.
+Diantu usa el sistema de autenticación nativo de Django — login con `username` + `password`, no con correo electrónico. El formulario de login (`LoginForm`) extiende `AuthenticationForm` únicamente para agregar clases CSS a los campos, sin modificar la lógica de autenticación. Esto evita tener que crear un backend de autenticación personalizado, que añade complejidad innecesaria para un proyecto de este tamaño. El correo se solicita en el registro únicamente para futuras funcionalidades de recuperación de cuenta.
 
 ---
 
@@ -16,20 +16,43 @@ Django provee automáticamente login, logout y cambio de contraseña al incluir 
 
 ```python
 # config/urls.py
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
+from apps.accounts.forms import LoginForm
+
 urlpatterns = [
-    path('cuentas/', include('django.contrib.auth.urls')),
-    path('cuentas/', include('apps.accounts.urls')),  # solo agrega 'registro/'
-    # ...
+    path('admin/', admin.site.urls),
+    path('cuentas/login/', LoginView.as_view(authentication_form=LoginForm), name='login'),
+    path('cuentas/logout/', LogoutView.as_view(), name='logout'),
+    path('cuentas/password_change/', PasswordChangeView.as_view(), name='password_change'),
+    path('cuentas/password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('cuentas/password_reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('cuentas/password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('cuentas/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('cuentas/reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('cuentas/', include('apps.accounts.urls')),
+    path('categorias/', include('apps.categories.urls')),
 ]
 ```
 
 | URL | Nombre | Función | Origen |
 |---|---|---|---|
-| `/cuentas/login/` | `login` | Iniciar sesión | Django nativo |
+| `/cuentas/login/` | `login` | Iniciar sesión — usa `LoginForm` (custom, no el formulario nativo sin modificar) | Django nativo (form custom) |
 | `/cuentas/logout/` | `logout` | Cerrar sesión | Django nativo |
 | `/cuentas/password_change/` | `password_change` | Cambiar contraseña | Django nativo |
 | `/cuentas/password_reset/` | `password_reset` | Recuperar contraseña vía correo | Django nativo |
 | `/cuentas/registro/` | `accounts:registro` | Crear cuenta nueva | Custom (Diantu) |
+| `/cuentas/eliminar-cuenta/` | `accounts:eliminar_cuenta` | Eliminar cuenta (soft delete) | Custom (Diantu) |
 
 ---
 
@@ -41,6 +64,8 @@ LOGOUT_REDIRECT_URL = 'login'            # a dónde va tras cerrar sesión
 LOGIN_URL = 'login'                       # a dónde se redirige si @login_required falla
 ```
 
+Además, `config/settings/base.py` define `AUTH_PASSWORD_VALIDATORS` (la lista estándar de Django: similitud con datos del usuario, longitud mínima, contraseñas comunes, contraseñas solo numéricas). Es relevante para el flujo de registro: `RegistroForm` hereda de `UserCreationForm`, que ejecuta estos validadores automáticamente al crear la cuenta — por eso una contraseña débil o muy similar al username hace fallar el registro antes de llegar a la señal `post_save`.
+
 ---
 
 ## Vista de registro (`apps/accounts/views.py`)
@@ -50,12 +75,20 @@ Ya definida en `diantu-vistas-urls.md`, se repite aquí con foco en el flujo de 
 ```python
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from .forms import RegistroForm
 
 
 def registro(request):
+    """
+    FBV porque además de crear el User, dispara la creación de las
+    categorías predeterminadas mediante la señal post_save (ver
+    diantu-autenticacion.md). No es un CRUD estándar de Django.
+    """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistroForm(request.POST)
         if form.is_valid():
             user = form.save()  # ← dispara la señal post_save (ver abajo)
             messages.success(request, f'Cuenta creada. ¡Bienvenido a Diantu, {user.username}!')
@@ -63,9 +96,24 @@ def registro(request):
         else:
             messages.error(request, 'Revisa los datos ingresados.')
     else:
-        form = UserCreationForm()
+        form = RegistroForm()
 
     return render(request, 'accounts/register.html', {'form': form})
+
+
+@login_required
+@require_POST
+def eliminar_cuenta(request):
+    """
+    Solo responde a POST para que la baja de cuenta nunca se dispare
+    por accidente con un simple link (GET).
+    """
+    user = request.user
+    user.is_active = False
+    user.save()
+    logout(request)
+    messages.success(request, 'Tu cuenta fue eliminada. ¡Gracias por usar Diantu!')
+    return redirect('login')
 ```
 
 ---
@@ -80,6 +128,7 @@ Esta es la pieza más importante del flujo de autenticación de Diantu. Cuando u
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from apps.accounts.models import Profile
 from .models import Category
 
 DEFAULT_CATEGORIES = [
@@ -100,13 +149,15 @@ def crear_categorias_predeterminadas(sender, instance, created, **kwargs):
     Se ejecuta automáticamente cada vez que se guarda un User.
     `created=True` solo la primera vez (cuando el usuario se registra),
     por eso el if — evita duplicar categorías en cada login o edición
-    de perfil.
+    de perfil. Crea las 8 categorías predeterminadas y el Profile
+    del usuario nuevo, con los valores por defecto del modelo.
     """
     if created:
         categorias = [
             Category(owner=instance, **data) for data in DEFAULT_CATEGORIES
         ]
         Category.objects.bulk_create(categorias)
+        Profile.objects.create(user=instance)
 ```
 
 ### Registro obligatorio de la señal en `apps/categories/apps.py`
@@ -176,35 +227,48 @@ Se recomienda mantener ambos durante el desarrollo: un superusuario fijo (ej. `a
 
 ---
 
-## Template de login personalizado (opcional)
+## Template de login personalizado
 
 Django usa `registration/login.html` por defecto. Para que coincida con el diseño de Diantu, se sobreescribe en `templates/registration/login.html`:
 
 ```html
 {% extends "base.html" %}
+{% load static %}
 
 {% block titulo %}Iniciar sesión — Diantú{% endblock %}
+
+{% block main_extra_class %}app-main--center{% endblock %}
 
 {% block contenido %}
 <div class="auth-card">
     <h1>Iniciar sesión</h1>
+    <p class="auth-subtitle">Ingresa a tu cuenta para continuar.</p>
 
-    {% if form.errors %}
+    {% if form.non_field_errors %}
     <div class="form-error-banner">
-        <p>Usuario o contraseña incorrectos.</p>
+        {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
     </div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
+
+        {% for field in form %}
         <div class="form-group">
-            <label for="id_username" class="form-label">Usuario</label>
-            {{ form.username }}
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="form-field-error">
+                {% for error in field.errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
-        <div class="form-group">
-            <label for="id_password" class="form-label">Contraseña</label>
-            {{ form.password }}
-        </div>
+        {% endfor %}
+
         <button type="submit" class="btn-primary">Ingresar</button>
     </form>
 
@@ -215,4 +279,4 @@ Django usa `registration/login.html` por defecto. Para que coincida con el dise�
 
 ---
 
-*Documento parte de la serie de arquitectura de Diantu. Ver también: `diantu-modelos.md`, `diantu-vistas-urls.md`, `diantu-testing.md`.*
+*Documento parte de la serie de arquitectura de Diantu. Ver también: `diantu-modelos.md`, `diantu-vistas-urls.md`, `diantu-testing.md`, `diantu-formularios.md`.*
