@@ -309,6 +309,7 @@ class RegistroTest(TestCase):
     def test_registro_crea_usuario(self):
         response = self.client.post(reverse('accounts:registro'), data={
             'username': 'nuevo_usuario',
+            'email': 'nuevo@ejemplo.com',
             'password1': 'claveSegura123',
             'password2': 'claveSegura123',
         })
@@ -317,6 +318,7 @@ class RegistroTest(TestCase):
     def test_registro_dispara_creacion_de_categorias(self):
         self.client.post(reverse('accounts:registro'), data={
             'username': 'nuevo_usuario',
+            'email': 'nuevo@ejemplo.com',
             'password1': 'claveSegura123',
             'password2': 'claveSegura123',
         })
@@ -326,10 +328,42 @@ class RegistroTest(TestCase):
     def test_registro_password_no_coincidentes_falla(self):
         response = self.client.post(reverse('accounts:registro'), data={
             'username': 'otro_usuario',
+            'email': 'otro@ejemplo.com',
             'password1': 'claveSegura123',
             'password2': 'claveDiferente456',
         })
         self.assertFalse(User.objects.filter(username='otro_usuario').exists())
+```
+
+Va en `test_models.py`:
+
+```python
+from django.test import TestCase
+from django.contrib.auth.models import User
+from ..models import Profile
+
+
+class ProfileModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='ana', password='claveSegura123')
+
+    def test_profile_se_crea_al_registrar_usuario(self):
+        self.assertTrue(Profile.objects.filter(user=self.user).exists())
+
+    def test_valores_por_defecto(self):
+        profile = Profile.objects.get(user=self.user)
+        self.assertEqual(profile.time_format, '24h')
+        self.assertEqual(profile.first_day_of_week, 'mon')
+        self.assertEqual(profile.timezone, 'America/Santiago')
+
+    def test_str_representation(self):
+        profile = Profile.objects.get(user=self.user)
+        self.assertEqual(str(profile), 'Perfil de ana')
+
+    def test_relacion_one_to_one_con_user(self):
+        profile = Profile.objects.get(user=self.user)
+        self.assertEqual(self.user.profile, profile)
+        self.assertEqual(profile.user, self.user)
 ```
 
 Va en `test_views.py`:
