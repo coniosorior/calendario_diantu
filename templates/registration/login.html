@@ -6,38 +6,6 @@
 {% block main_extra_class %}app-main--center{% endblock %}
 
 {% block contenido %}
-<div class="card card--auth">
-    <h1>Iniciar sesión</h1>
-    <p class="auth__subtitle">Ingresa a tu cuenta para continuar.</p>
-
-    {% if form.non_field_errors %}
-    <div class="form__error-banner">
-        {% for error in form.non_field_errors %}
-        <p>{{ error }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <form method="post" novalidate>
-        {% csrf_token %}
-
-        {% for field in form %}
-        <div class="form__group">
-            <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-            <div class="form__field-error">
-                {% for error in field.errors %}
-                <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        {% endfor %}
-
-        <button type="submit" class="btn--primary">Ingresar</button>
-    </form>
-
-    <p class="auth__hint">¿No tienes cuenta? <a href="{% url 'accounts:registro' %}">Regístrate</a></p>
-</div>
+{% url 'accounts:registro' as registro_url %}
+{% include "components/organisms/_auth_card.html" with titulo="Iniciar sesión" subtitulo="Ingresa a tu cuenta para continuar." form=form boton_texto="Ingresar" hint_texto="¿No tienes cuenta?" hint_url=registro_url hint_link_texto="Regístrate" %}
 {% endblock %}

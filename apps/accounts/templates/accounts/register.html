@@ -6,41 +6,6 @@
 {% block main_extra_class %}app-main--center{% endblock %}
 
 {% block contenido %}
-<div class="card card--auth">
-    <h1>Crear cuenta</h1>
-    <p class="auth__subtitle">Regístrate para empezar a organizar tu día.</p>
-
-    {% if form.non_field_errors %}
-    <div class="form__error-banner">
-        {% for error in form.non_field_errors %}
-        <p>{{ error }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <form method="post" novalidate>
-        {% csrf_token %}
-
-        {% for field in form %}
-        <div class="form__group">
-            <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
-            {{ field }}
-            {% if field.help_text %}
-            <p class="form__help-text">{{ field.help_text }}</p>
-            {% endif %}
-            {% if field.errors %}
-            <div class="form__field-error">
-                {% for error in field.errors %}
-                <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        {% endfor %}
-
-        <button type="submit" class="btn--primary">Registrarse</button>
-    </form>
-
-    <p class="auth__hint">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
-</div>
+{% url 'login' as login_url %}
+{% include "components/organisms/_auth_card.html" with titulo="Crear cuenta" subtitulo="Regístrate para empezar a organizar tu día." form=form boton_texto="Registrarse" hint_texto="¿Ya tienes cuenta?" hint_url=login_url hint_link_texto="Inicia sesión" %}
 {% endblock %}
