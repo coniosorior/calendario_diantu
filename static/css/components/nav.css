@@ -1,4 +1,4 @@
-.nav-logo {
+.nav__logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -8,7 +8,7 @@
     text-decoration: none;
 }
 
-.nav-logo-icon {
+.nav__logo-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
