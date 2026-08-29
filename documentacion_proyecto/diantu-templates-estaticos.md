@@ -24,6 +24,7 @@ Heredadas directamente del material de clase y ya acordadas en el proyecto:
 2. **Cero CSS embebido** — nunca usar el atributo `style=""` en HTML. Todo estilo va en archivos `.css` con clases. Excepción: el atributo `style` es aceptable únicamente cuando contiene una variable CSS dinámica proveniente de datos del usuario (ej. `style="--pill-color: {{ block.category.color }};"`), ya que es la única forma de inyectar un color definido por el usuario sin hardcodear clases para cada posibilidad. No es aceptable usar `style` con propiedades CSS completas y estáticas (ej. `style="color: red; font-size: 14px;"`) — eso siempre debe ir en una clase dentro de un archivo `.css`.
 3. **Sistema de componentes** — fragmentos repetidos (la píldora de bloque, la tarjeta de categoría) se extraen con `{% include %}` o Template Partials, nunca se copian y pegan.
 4. **`{% load static %}` en cada template que lo necesite** — no se hereda del `base.html`, hay que declararlo en cada archivo que use `{% static %}`.
+5. **Nomenclatura BEM para clases CSS** — todo componente sigue la sintaxis Block, Element, Modifier: `.bloque` (el componente en sí, ej. `.btn`, `.form`, `.card`), `.bloque__elemento` (una pieza que vive dentro del bloque, ej. `.form__input`, `.nav__logo`), `.bloque--modificador` (una variante del mismo bloque, ej. `.btn--primary`, `.card--auth`). Se usa un solo guion (`-`) únicamente para separar palabras dentro de un mismo nombre (ej. `.form__help-text`), nunca para indicar relación entre elementos.
 
 ---
 
