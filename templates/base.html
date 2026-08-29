@@ -29,7 +29,7 @@
             {# TODO: volver a planner:day cuando exista planner #}
             <span class="nav__logo-icon"><i class="ti ti-sun"></i></span> Diantú
         </a>
-        <nav class="nav-links">
+        <nav class="app-nav__links">
             {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:day' %}">Día</a>
             <a href="{% url 'planner:week' %}">Semana</a>
@@ -37,7 +37,7 @@
             {% endcomment %}
             <a href="{% url 'categories:list' %}">Categorías</a>
         </nav>
-        <div class="nav-actions">
+        <div class="app-nav__actions">
             {% comment %} TODO: descomentar cuando exista apps.planner
             <a href="{% url 'planner:inbox_list' %}" class="btn--icon"><i class="ti ti-inbox"></i></a>
             {% endcomment %}
