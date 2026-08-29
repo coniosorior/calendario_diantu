@@ -13,7 +13,7 @@ class RegistroForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'nombre@ejemplo.com',
         }),
     )
@@ -25,15 +25,15 @@ class RegistroForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'tu_usuario',
         })
         self.fields['password1'].widget.attrs.update({
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'Mínimo 8 caracteres',
         })
         self.fields['password2'].widget.attrs.update({
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'Repite tu contraseña',
         })
         self.fields['username'].help_text = None
@@ -49,10 +49,10 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'tu_usuario',
         })
         self.fields['password'].widget.attrs.update({
-            'class': 'form-input',
+            'class': 'form__input',
             'placeholder': 'Tu contraseña',
         })
