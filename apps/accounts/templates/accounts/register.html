@@ -6,9 +6,9 @@
 {% block main_extra_class %}app-main--center{% endblock %}
 
 {% block contenido %}
-<div class="auth-card">
+<div class="card card--auth">
     <h1>Crear cuenta</h1>
-    <p class="auth-subtitle">Regístrate para empezar a organizar tu día.</p>
+    <p class="auth__subtitle">Regístrate para empezar a organizar tu día.</p>
 
     {% if form.non_field_errors %}
     <div class="form__error-banner">
@@ -41,6 +41,6 @@
         <button type="submit" class="btn--primary">Registrarse</button>
     </form>
 
-    <p class="auth-hint">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+    <p class="auth__hint">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
 </div>
 {% endblock %}

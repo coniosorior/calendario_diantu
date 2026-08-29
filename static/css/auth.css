@@ -1,18 +1,14 @@
-.auth-card {
+.card--auth {
     max-width: 420px;
     margin: 4rem auto;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 1.25rem;
-    padding: 2rem;
 }
 
-.auth-card h1 {
+.card--auth h1 {
     text-align: center;
     margin-bottom: 0.5rem;
 }
 
-.auth-subtitle {
+.auth__subtitle {
     text-align: center;
     color: var(--color-text-secondary);
     font-size: 1rem;
@@ -20,19 +16,19 @@
     margin-bottom: 1.5rem;
 }
 
-.auth-hint {
+.auth__hint {
     text-align: center;
     color: var(--color-text-secondary);
     font-size: 0.875rem;
     margin-top: 1rem;
 }
 
-.auth-hint a {
+.auth__hint a {
     color: var(--color-brand);
     font-weight: 500;
     text-decoration: none;
 }
 
-.auth-hint a:hover {
+.auth__hint a:hover {
     text-decoration: underline;
 }
