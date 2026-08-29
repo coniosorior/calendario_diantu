@@ -1,0 +1,9 @@
+<input
+    type="{{ tipo|default:'text' }}"
+    name="{{ nombre }}"
+    id="{{ id_campo }}"
+    class="form__input"
+    placeholder="{{ placeholder }}"
+    {% if valor %}value="{{ valor }}"{% endif %}
+    {% if requerido %}required{% endif %}
+>
