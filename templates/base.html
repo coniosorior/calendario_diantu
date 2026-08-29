@@ -39,11 +39,11 @@
         </nav>
         <div class="nav-actions">
             {% comment %} TODO: descomentar cuando exista apps.planner
-            <a href="{% url 'planner:inbox_list' %}" class="btn-icon"><i class="ti ti-inbox"></i></a>
+            <a href="{% url 'planner:inbox_list' %}" class="btn--icon"><i class="ti ti-inbox"></i></a>
             {% endcomment %}
             <form method="post" action="{% url 'logout' %}" class="logout-form">
                 {% csrf_token %}
-                <button type="submit" class="btn-icon"><span class="sr-only">Cerrar sesión</span><i class="ti ti-logout"></i></button>
+                <button type="submit" class="btn--icon"><span class="sr-only">Cerrar sesión</span><i class="ti ti-logout"></i></button>
             </form>
         </div>
     </header>
