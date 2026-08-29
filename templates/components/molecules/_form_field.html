@@ -1,0 +1,13 @@
+{% load static %}
+{% include "components/atoms/_label.html" with para=field.id_for_label texto=field.label %}
+{{ field }}
+{% if field.help_text %}
+<p class="form__help-text">{{ field.help_text }}</p>
+{% endif %}
+{% if field.errors %}
+<div class="form__field-error">
+    {% for error in field.errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}

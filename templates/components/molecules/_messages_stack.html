@@ -1,0 +1,7 @@
+{% if messages %}
+<div class="messages-stack">
+    {% for message in messages %}
+    {% include "components/atoms/_message.html" with tipo=message.tags texto=message %}
+    {% endfor %}
+</div>
+{% endif %}
