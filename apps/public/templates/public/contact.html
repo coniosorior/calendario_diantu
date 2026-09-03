@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Contacto — Diantú{% endblock %}
+
+{% block contenido %}
+{% include "components/organisms/_landing_nav.html" %}
+
+<div class="card">
+    <h1>Contacto</h1>
+    <p class="auth__subtitle">¿Tienes alguna consulta o problema? Escríbenos.</p>
+
+    {% include "components/molecules/_error_banner.html" %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form__group">
+            {% include "components/molecules/_form_field.html" %}
+        </div>
+        {% endfor %}
+        {% include "components/atoms/_button.html" with texto="Enviar" variante="primary" %}
+    </form>
+</div>
+{% endblock %}
