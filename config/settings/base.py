@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     # Apps de Diantu
     'apps.accounts',
     'apps.categories',
+    'apps.public',
 ]
 
 MIDDLEWARE = [
