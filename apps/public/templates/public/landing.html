@@ -3,6 +3,10 @@
 
 {% block titulo %}Diantú — Ordena tu día bajo el sol{% endblock %}
 
+{% block css_extra %}
+<link rel="stylesheet" href="{% static 'css/landing.css' %}">
+{% endblock %}
+
 {% block contenido %}
 {% include "components/organisms/_landing_nav.html" %}
 
