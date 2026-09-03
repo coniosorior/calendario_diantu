@@ -40,4 +40,5 @@ urlpatterns = [
     path('cuentas/reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('cuentas/', include('apps.accounts.urls')),
     path('categorias/', include('apps.categories.urls')),
+    path('', include('apps.public.urls')),
 ]
