@@ -23,9 +23,9 @@
 </head>
 <body>
 
-    {% if user.is_authenticated %}
-    {% include "components/organisms/_nav_header.html" %}
-    {% endif %}
+    {% block nav %}
+    {% include "components/organisms/_app_nav.html" %}
+    {% endblock %}
 
     <main class="app-main {% block main_extra_class %}{% endblock %}">
         {% if messages %}
