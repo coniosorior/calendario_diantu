@@ -1,6 +1,7 @@
+{% load static %}
 <header class="app-nav">
     <a href="{% if user.is_authenticated %}#{% else %}{% url 'public:landing' %}{% endif %}" class="nav__logo">
-        <span class="nav__logo-icon"><i class="ti ti-sun"></i></span> Diantú
+        <img src="{% static 'images/logo-h-claro.svg' %}" alt="Diantú" class="nav__logo-img">
     </a>
 
     {% if not solo_logo %}
