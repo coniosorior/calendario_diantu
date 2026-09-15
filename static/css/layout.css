@@ -32,6 +32,10 @@
     font-weight: 500;
 }
 
+.app-nav__links a:visited {
+    color: var(--color-text-primary);
+}
+
 .app-nav__actions {
     display: flex;
     align-items: center;

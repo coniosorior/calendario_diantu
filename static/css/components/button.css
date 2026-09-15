@@ -14,6 +14,10 @@
     transition: background-color 0.15s ease;
 }
 
+.btn--primary:visited {
+    color: var(--color-text-primary);
+}
+
 .btn--primary:hover {
     background: var(--color-brand-hover);
 }

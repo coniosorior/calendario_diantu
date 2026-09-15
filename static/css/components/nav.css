@@ -8,11 +8,19 @@
     text-decoration: none;
 }
 
+.nav__logo:visited {
+    color: var(--color-brand);
+}
+
 .nav__logo-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 1.375rem;
+}
+
+.nav__logo-img {
+    height: 1.75rem;
 }
 
 .logout-form {
