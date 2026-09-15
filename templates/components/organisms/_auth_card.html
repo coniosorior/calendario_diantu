@@ -1,3 +1,7 @@
+{% load static %}
+<a href="{% url 'public:landing' %}" class="auth__logo">
+    <img src="{% static 'images/logo-h-claro.svg' %}" alt="Diantú">
+</a>
 <div class="card card--auth">
     <h1>{{ titulo }}</h1>
     <p class="auth__subtitle">{{ subtitulo }}</p>

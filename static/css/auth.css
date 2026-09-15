@@ -32,3 +32,13 @@
 .auth__hint a:hover {
     text-decoration: underline;
 }
+
+.auth__logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.auth__logo img {
+    height: 2rem;
+}
