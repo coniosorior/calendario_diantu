@@ -42,3 +42,13 @@
 .card--wide li {
     margin-bottom: 0.375rem;
 }
+
+.card--medium {
+    max-width: 40rem;
+    margin: 3rem auto;
+}
+
+.card--medium h1 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}

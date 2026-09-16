@@ -4,19 +4,28 @@
 {% block titulo %}Contacto — Diantú{% endblock %}
 
 {% block contenido %}
-<div class="card card--compact">
+<div class="card card--medium">
     <h1>Contacto</h1>
-    <p class="auth__subtitle">¿Tienes alguna consulta o problema? Escríbenos.</p>
+    <p class="auth__subtitle">¿Tienes dudas, un problema o una sugerencia? Escríbenos.</p>
 
     {% include "components/molecules/_error_banner.html" %}
 
     <form method="post" novalidate>
         {% csrf_token %}
-        {% for field in form %}
-        <div class="form__group">
-            {% include "components/molecules/_form_field.html" %}
+        <div class="form__row">
+            <div class="form__group">
+                {% with field=form.name %}{% include "components/molecules/_form_field.html" %}{% endwith %}
+            </div>
+            <div class="form__group">
+                {% with field=form.email %}{% include "components/molecules/_form_field.html" %}{% endwith %}
+            </div>
         </div>
-        {% endfor %}
+        <div class="form__group">
+            {% with field=form.message_type %}{% include "components/molecules/_form_field.html" %}{% endwith %}
+        </div>
+        <div class="form__group">
+            {% with field=form.message %}{% include "components/molecules/_form_field.html" %}{% endwith %}
+        </div>
         {% include "components/atoms/_button.html" with texto="Enviar" variante="primary" %}
     </form>
 </div>
