@@ -45,3 +45,11 @@
 .privacy-content__section li {
     margin-bottom: 0.375rem;
 }
+
+.privacy-content__section a {
+    color: var(--color-brand);
+}
+
+.privacy-content__section a:visited {
+    color: var(--color-brand);
+}
