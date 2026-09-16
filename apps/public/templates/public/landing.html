@@ -14,6 +14,40 @@
     <a href="{% url 'accounts:registro' %}" class="btn--primary">Crear cuenta gratis</a>
 </section>
 
+<section class="landing-preview">
+    <div class="landing-preview__card">
+        <div class="landing-preview__header">
+            <div>
+                <p class="landing-preview__date">Hoy, {% now "j \d\e F" %}</p>
+                <p class="landing-preview__summary">5 bloques organizados</p>
+            </div>
+        </div>
+        <ul class="landing-preview__list">
+            <li class="landing-preview__item landing-preview__item--done">
+                <span class="landing-preview__time">09:00 — 09:30</span>
+                <span class="landing-preview__title">Rutina matutina y meditación guiada</span>
+                <i class="ti ti-check" aria-hidden="true"></i>
+            </li>
+            <li class="landing-preview__item landing-preview__item--active">
+                <span class="landing-preview__time">09:30 — 12:00</span>
+                <span class="landing-preview__title">Trabajo de enfoque profundo</span>
+            </li>
+            <li class="landing-preview__item">
+                <span class="landing-preview__time">12:30 — 14:00</span>
+                <span class="landing-preview__title">Almuerzo al aire libre</span>
+            </li>
+            <li class="landing-preview__item">
+                <span class="landing-preview__time">14:00 — 16:30</span>
+                <span class="landing-preview__title">Sesión de trabajo colaborativo</span>
+            </li>
+            <li class="landing-preview__item">
+                <span class="landing-preview__time">16:30 — 18:00</span>
+                <span class="landing-preview__title">Desconexión y lectura</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
 <section class="landing-features">
     <div class="landing-feature">
         <i class="ti ti-clock" aria-hidden="true"></i>
