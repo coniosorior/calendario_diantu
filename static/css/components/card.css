@@ -11,38 +11,6 @@
     margin: 3rem auto;
 }
 
-.card--wide {
-    max-width: 44rem;
-    margin: 3rem auto;
-}
-
-.card--wide h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-}
-
-.card--wide h2 {
-    font-size: 1.0625rem;
-    margin-top: 1.75rem;
-    margin-bottom: 0.5rem;
-}
-
-.card--wide p,
-.card--wide li {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-}
-
-.card--wide ul {
-    padding-left: 1.25rem;
-    margin: 0.5rem 0;
-}
-
-.card--wide li {
-    margin-bottom: 0.375rem;
-}
-
 .card--medium {
     max-width: 40rem;
     margin: 3rem auto;

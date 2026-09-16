@@ -3,35 +3,53 @@
 
 {% block titulo %}Privacidad — Diantú{% endblock %}
 
+{% block css_extra %}
+<link rel="stylesheet" href="{% static 'css/privacy.css' %}">
+{% endblock %}
+
 {% block contenido %}
-<div class="card card--wide">
+<div class="privacy-content">
     <h1>Política de Privacidad</h1>
     <p><em>Última actualización: [fecha de publicación]</em></p>
 
-    <h2>1. Responsable del tratamiento de datos</h2>
-    <p>Diantú es un servicio cuyo tratamiento de datos personales es responsabilidad de la administración del proyecto, encargada de garantizar el cumplimiento de esta política.</p>
+    <div class="privacy-content__section">
+        <h2>1. Responsable del tratamiento de datos</h2>
+        <p>Diantú es un servicio cuyo tratamiento de datos personales es responsabilidad de la administración del proyecto, encargada de garantizar el cumplimiento de esta política.</p>
+    </div>
 
-    <h2>2. Datos que se recopilan</h2>
-    <p>Al utilizar Diantú, se recopilan los siguientes datos:</p>
-    <ul>
-        <li><strong>Datos de cuenta:</strong> nombre de usuario y correo electrónico.</li>
-        <li><strong>Contraseña:</strong> almacenada exclusivamente en formato encriptado; en ningún momento se guarda ni se tiene acceso a la contraseña en texto plano.</li>
-        <li><strong>Datos de uso:</strong> la información que el usuario ingresa voluntariamente en la aplicación, tales como actividades, horarios, categorías y preferencias de configuración.</li>
-    </ul>
+    <div class="privacy-content__section">
+        <h2>2. Datos que se recopilan</h2>
+        <p>Al utilizar Diantú, se recopilan los siguientes datos:</p>
+        <ul>
+            <li><strong>Datos de cuenta:</strong> nombre de usuario y correo electrónico.</li>
+            <li><strong>Contraseña:</strong> almacenada exclusivamente en formato encriptado; en ningún momento se guarda ni se tiene acceso a la contraseña en texto plano.</li>
+            <li><strong>Datos de uso:</strong> la información que el usuario ingresa voluntariamente en la aplicación, tales como actividades, horarios, categorías y preferencias de configuración.</li>
+        </ul>
+    </div>
 
-    <h2>3. Finalidad del tratamiento</h2>
-    <p>Los datos recopilados se utilizan exclusivamente para el funcionamiento de la aplicación: mostrar y organizar el calendario personal del usuario, sus categorías, y sus preferencias de configuración. Diantú no utiliza estos datos con fines publicitarios ni de análisis de mercado.</p>
+    <div class="privacy-content__section">
+        <h2>3. Finalidad del tratamiento</h2>
+        <p>Los datos recopilados se utilizan exclusivamente para el funcionamiento de la aplicación: mostrar y organizar el calendario personal del usuario, sus categorías, y sus preferencias de configuración. Diantú no utiliza estos datos con fines publicitarios ni de análisis de mercado.</p>
+    </div>
 
-    <h2>4. Almacenamiento de los datos</h2>
-    <p>Los datos se almacenan de forma segura en Supabase, un proveedor de infraestructura en la nube. El acceso a estos datos está restringido exclusivamente al personal autorizado responsable de la administración de Diantú.</p>
+    <div class="privacy-content__section">
+        <h2>4. Almacenamiento de los datos</h2>
+        <p>Los datos se almacenan de forma segura en Supabase, un proveedor de infraestructura en la nube. El acceso a estos datos está restringido exclusivamente al personal autorizado responsable de la administración de Diantú.</p>
+    </div>
 
-    <h2>5. Comunicación de datos a terceros</h2>
-    <p>Diantú no vende, comparte ni cede los datos personales de sus usuarios a terceros con fines publicitarios, comerciales o de analítica externa. Los únicos terceros involucrados son los proveedores técnicos estrictamente necesarios para el funcionamiento del servicio (almacenamiento de base de datos y alojamiento de la aplicación).</p>
+    <div class="privacy-content__section">
+        <h2>5. Comunicación de datos a terceros</h2>
+        <p>Diantú no vende, comparte ni cede los datos personales de sus usuarios a terceros con fines publicitarios, comerciales o de analítica externa. Los únicos terceros involucrados son los proveedores técnicos estrictamente necesarios para el funcionamiento del servicio (almacenamiento de base de datos y alojamiento de la aplicación).</p>
+    </div>
 
-    <h2>6. Eliminación de cuenta</h2>
-    <p>Al eliminar tu cuenta, pierdes el acceso a ella de forma inmediata. Los datos asociados se conservan de manera segura, sin uso activo ni acceso operativo, con el único fin de análisis interno orientado a optimizar y mejorar el servicio que ofrece Diantú.</p>
+    <div class="privacy-content__section">
+        <h2>6. Eliminación de cuenta</h2>
+        <p>Al eliminar tu cuenta, pierdes el acceso a ella de forma inmediata. Los datos asociados se conservan de manera segura, sin uso activo ni acceso operativo, con el único fin de análisis interno orientado a optimizar y mejorar el servicio que ofrece Diantú.</p>
+    </div>
 
-    <h2>7. Marco legal y derechos del usuario</h2>
-    <p>El tratamiento de datos personales de Diantú se rige por la Ley N° 19.628 sobre Protección de la Vida Privada de Chile. El usuario puede solicitar, de forma autónoma y en cualquier momento, la desactivación de su cuenta a través de la opción "Eliminar cuenta" disponible en la configuración de su perfil, conforme a lo descrito en el punto 6. Para solicitudes de eliminación total de datos personales, puede contactarnos a través de nuestro <a href="{% url 'public:contact' %}">formulario de contacto</a>.</p>
+    <div class="privacy-content__section">
+        <h2>7. Marco legal y derechos del usuario</h2>
+        <p>El tratamiento de datos personales de Diantú se rige por la Ley N° 19.628 sobre Protección de la Vida Privada de Chile. El usuario puede solicitar, de forma autónoma y en cualquier momento, la desactivación de su cuenta a través de la opción "Eliminar cuenta" disponible en la configuración de su perfil, conforme a lo descrito en el punto 6. Para solicitudes de eliminación total de datos personales, puede contactarnos a través de nuestro <a href="{% url 'public:contact' %}">formulario de contacto</a>.</p>
+    </div>
 </div>
 {% endblock %}
