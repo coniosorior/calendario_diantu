@@ -21,7 +21,8 @@
             </div>
         </div>
         <div class="form__group">
-            {% with field=form.message_type %}{% include "components/molecules/_form_field.html" %}{% endwith %}
+            {% include "components/atoms/_label.html" with para=form.message_type.id_for_label texto=form.message_type.label %}
+            {% with field=form.message_type %}{% include "components/atoms/_select.html" %}{% endwith %}
         </div>
         <div class="form__group">
             {% with field=form.message %}{% include "components/molecules/_form_field.html" %}{% endwith %}
@@ -29,4 +30,8 @@
         {% include "components/atoms/_button.html" with texto="Enviar" variante="primary" %}
     </form>
 </div>
+{% endblock %}
+
+{% block js_extra %}
+<script src="{% static 'js/select.js' %}"></script>
 {% endblock %}

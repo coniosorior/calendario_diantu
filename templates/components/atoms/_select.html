@@ -1,0 +1,14 @@
+<div class="c-select" data-select>
+    <button type="button" class="c-select__trigger" data-select-trigger>
+        <span data-select-label>{{ field.value|default:"Selecciona una opción" }}</span>
+        <i class="ti ti-chevron-down" aria-hidden="true"></i>
+    </button>
+    <ul class="c-select__options" data-select-options hidden>
+        {% for value, label in field.field.choices %}
+        {% if value %}
+        <li class="c-select__option" data-value="{{ value }}" tabindex="0">{{ label }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {{ field }}
+</div>
