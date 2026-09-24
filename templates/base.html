@@ -39,6 +39,8 @@
         {% block contenido %}{% endblock %}
     </main>
 
-    {% block js_extra %}{% endblock %}
+    {% block js_extra %}
+    <script src="{% static 'js/nav-toggle.js' %}"></script>
+    {% endblock %}
 </body>
 </html>
