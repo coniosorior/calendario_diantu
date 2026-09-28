@@ -1,39 +1,45 @@
 {% load static %}
 <header class="app-nav">
-    <a href="{% if user.is_authenticated %}#{% else %}{% url 'public:landing' %}{% endif %}" class="nav__logo">
-        <img src="{% static 'images/logo-h-claro.svg' %}" alt="Diantú" class="nav__logo-img">
-    </a>
+    <div class="app-nav__inner">
+        <a href="{% if user.is_authenticated %}#{% else %}{% url 'public:landing' %}{% endif %}" class="nav__logo">
+            <img src="{% static 'images/logo-h-claro.svg' %}" alt="Diantú" class="nav__logo-img">
+        </a>
 
-    {% if not solo_logo %}
-    <button type="button" class="app-nav__toggle" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
-        <i class="ti ti-menu-2" aria-hidden="true"></i>
-    </button>
+        {% if not solo_logo %}
+        <button type="button" class="app-nav__toggle" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
+            <i class="ti ti-menu-2" aria-hidden="true"></i>
+        </button>
 
-    <div class="app-nav__collapse" data-nav-collapse>
-        {% if user.is_authenticated %}
-        <nav class="app-nav__links">
-            {% comment %} TODO: descomentar cuando exista apps.planner
-            <a href="{% url 'planner:day' %}">Día</a>
-            <a href="{% url 'planner:week' %}">Semana</a>
-            <a href="{% url 'planner:month' %}">Mes</a>
-            {% endcomment %}
-            <a href="{% url 'categories:list' %}">Categorías</a>
-        </nav>
-        <div class="app-nav__actions">
-            {% comment %} TODO: descomentar cuando exista apps.planner
-            <a href="{% url 'planner:inbox_list' %}" class="btn--icon"><i class="ti ti-inbox"></i></a>
-            {% endcomment %}
-            <form method="post" action="{% url 'logout' %}" class="logout-form">
-                {% csrf_token %}
-                {% include "components/atoms/_button.html" with texto="" variante="icon" icono="ti-logout" sr_only="Cerrar sesión" %}
-            </form>
-        </div>
-        {% else %}
-        <div class="app-nav__actions">
-            <a href="{% url 'login' %}">Iniciar sesión</a>
-            <a href="{% url 'accounts:registro' %}" class="btn--primary">Registrarse</a>
+        <div class="app-nav__collapse" data-nav-collapse>
+            {% if user.is_authenticated %}
+            <nav class="app-nav__links">
+                {% comment %} TODO: descomentar cuando exista apps.planner
+                <a href="{% url 'planner:day' %}">Día</a>
+                <a href="{% url 'planner:week' %}">Semana</a>
+                <a href="{% url 'planner:month' %}">Mes</a>
+                {% endcomment %}
+                <a href="{% url 'categories:list' %}">Categorías</a>
+            </nav>
+            <div class="app-nav__actions">
+                {% comment %} TODO: descomentar cuando exista apps.planner
+                <a href="{% url 'planner:inbox_list' %}" class="btn--icon"><i class="ti ti-inbox"></i></a>
+                {% endcomment %}
+                <form method="post" action="{% url 'logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    {% include "components/atoms/_button.html" with texto="" variante="icon" icono="ti-logout" sr_only="Cerrar sesión" %}
+                </form>
+            </div>
+            {% else %}
+            <nav class="app-nav__links">
+                <a href="{% url 'public:landing' %}#caracteristicas">Características</a>
+                <a href="{% url 'public:landing' %}#como-funciona">Cómo funciona</a>
+            </nav>
+            <div class="app-nav__actions">
+                <a href="{% url 'login' %}">Iniciar sesión</a>
+                <a href="{% url 'accounts:registro' %}" class="btn--primary">Registrarse</a>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
     </div>
-    {% endif %}
 </header>
