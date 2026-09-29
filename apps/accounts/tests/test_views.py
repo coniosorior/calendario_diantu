@@ -4,7 +4,7 @@ from django.urls import reverse
 from apps.categories.models import Category
 
 
-class RegistroTest(TestCase):
+class RegisterTest(TestCase):
     def setUp(self):
         self.client = Client()
 
