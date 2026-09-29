@@ -29,9 +29,9 @@ class ContactMessage(TimestampedModel):
 
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    message_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    message_type = models.CharField(max_length=20, choices=TYPE_CHOICES, verbose_name='tipo de mensaje')
     message = models.TextField()
-    resolved = models.BooleanField(default=False)
+    resolved = models.BooleanField(default=False, verbose_name='resuelto')
 
     class Meta:
         verbose_name = 'Mensaje de contacto'
