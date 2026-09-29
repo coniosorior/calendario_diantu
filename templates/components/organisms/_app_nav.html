@@ -11,6 +11,9 @@
         </button>
 
         <div class="app-nav__collapse" data-nav-collapse>
+            <button type="button" class="app-nav__close" data-nav-close aria-label="Cerrar menú">
+                <i class="ti ti-x" aria-hidden="true"></i>
+            </button>
             {% if user.is_authenticated %}
             <nav class="app-nav__links">
                 {% comment %} TODO: descomentar cuando exista apps.planner
@@ -35,11 +38,12 @@
                 <a href="{% url 'public:landing' %}#como-funciona">Cómo funciona</a>
             </nav>
             <div class="app-nav__actions">
-                <a href="{% url 'login' %}">Iniciar sesión</a>
-                <a href="{% url 'accounts:registro' %}" class="btn--primary">Registrarse</a>
+                <a href="{% url 'login' %}" class="app-nav__login-link">Iniciar sesión</a>
+                <a href="{% url 'accounts:registro' %}" class="btn--primary app-nav__register-link">Registrarse</a>
             </div>
             {% endif %}
         </div>
+        <div class="overlay" data-nav-overlay hidden></div>
         {% endif %}
     </div>
 </header>
