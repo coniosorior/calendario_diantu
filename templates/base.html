@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{% static 'css/components/message.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/overlay.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/footer.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.48.0/tabler-icons.min.css">
 
     {% block css_extra %}{% endblock %}
@@ -38,6 +39,8 @@
 
         {% block contenido %}{% endblock %}
     </main>
+
+    {% include "components/organisms/_app_footer.html" %}
 
     {% block js_extra %}
     <script src="{% static 'js/nav-toggle.js' %}"></script>
